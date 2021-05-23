@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Bot : MonoBehaviour
 {
-    [SerializeField] FloatingJoystick joystick;
+    GameObject target;
+    // Vector from your position to target position
+    Vector3 direction;
 
     [SerializeField] Rigidbody rb;
     [SerializeField] SphereCollider col;
-
-    // Opposite to mouse drag direction
-    Vector3 direction;
-
-    [SerializeField] GameObject arrows;
-    [SerializeField] GameObject arrowOne;
-    [SerializeField] GameObject arrowTwo;
-    [SerializeField] GameObject arrowThree;
 
     float baseSpeed = 2000;
     float speed = 0;
@@ -39,7 +33,7 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        
+        target = FindObjectOfType<Target>().gameObject;
     }
 
     void Update()
@@ -70,19 +64,8 @@ public class Ball : MonoBehaviour
             }
             if (idle)
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    HideArrows();
-                }
+                ChargeAtTarget();
             }
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (idle)
-        {
-            ShowArrows();
         }
     }
 
@@ -93,10 +76,6 @@ public class Ball : MonoBehaviour
             CoughtByHole(other.gameObject.transform.position);
         }
     }
-
-    #region Public Methods
-
-    #endregion
 
     #region Private Methods
     void CoughtByHole(Vector3 _holePosition)
@@ -121,51 +100,19 @@ public class Ball : MonoBehaviour
         transform.localScale = Vector3.one;
     }
 
-    void ShowArrows()
+    void ChargeAtTarget()
     {
-        direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
-        float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+        // Aim at target
+        direction = target.transform.position - transform.position;
+        // Add small error to the vector to make it look not perfectly aimed
+        Vector3 error = new Vector3(Random.Range(0, 100), 0, Random.Range(0, 100));
+        direction += error;
 
-        arrows.transform.rotation = Quaternion.Euler(90, 0, angle - 90);
-
-        float value = direction.magnitude;
-
-        if (value < 0.25f)
-        {
-            arrowOne.SetActive(false);
-            arrowTwo.SetActive(false);
-            arrowThree.SetActive(false);
-            speed = baseSpeed * 0;
-        }
-        else if (value >= 0.25f && value < 0.5f)
-        {
-            arrowOne.SetActive(true);
-            arrowTwo.SetActive(false);
-            arrowThree.SetActive(false);
-            speed = baseSpeed * 1;
-        }
-        else if (value >= 0.5f && value < 0.75f)
-        {
-            arrowOne.SetActive(true);
-            arrowTwo.SetActive(true);
-            arrowThree.SetActive(false);
-            speed = baseSpeed * 2;
-        }
-        else
-        {
-            arrowOne.SetActive(true);
-            arrowTwo.SetActive(true);
-            arrowThree.SetActive(true);
-            speed = baseSpeed * 3;
-        }
-    }
-
-    void HideArrows()
-    {
-        arrowOne.SetActive(false);
-        arrowTwo.SetActive(false);
-        arrowThree.SetActive(false);
-
+        // Choose random speed multiplier like arrows for normal ball
+        int speedMultiplier = Random.Range(0, 4);
+        speed = baseSpeed * speedMultiplier;
+        Debug.Log(speed);
+        // Push yourself toward the target with set speed
         rb.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }
     #endregion

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d3fbc90515d874acb87fc384c64a50f9
+guid: 6e06e55c7511946e2b9e00cbf180484d
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Palamecia Titling
+  - Baloo Bhaina
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

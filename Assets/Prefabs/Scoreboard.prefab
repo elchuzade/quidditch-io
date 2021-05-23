@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 4230897523721336525}
   - component: {fileID: 4230897523721336515}
   - component: {fileID: 4230897523721336514}
+  - component: {fileID: 5181601028731396570}
+  - component: {fileID: 1769461822825891653}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -112,7 +114,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4230897523721336515
 CanvasRenderer:
@@ -152,6 +154,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &5181601028731396570
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230897523721336524}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a09adddcf33e549ec90bd4ed65ca4a08, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1769461822825891653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230897523721336524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48da26d866bec443b88243cf2cae48c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4230897523999464761
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,6 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4230897523999464766}
+  - component: {fileID: 7151990177884354399}
   m_Layer: 0
   m_Name: Scoreboard
   m_TagString: Untagged
@@ -186,9 +220,25 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 70, y: -210}
-  m_SizeDelta: {x: 140, y: 100}
+  m_AnchoredPosition: {x: 80, y: -230}
+  m_SizeDelta: {x: 160, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7151990177884354399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230897523999464761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065665582d22c4aa894b343831969a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  diamondIcon: {fileID: 4230897523721336524}
+  coinIcon: {fileID: 4230897524845098503}
+  diamondText: {fileID: 4230897524718576475}
+  coinText: {fileID: 4230897524181871458}
 --- !u!1 &4230897524181871468
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +408,8 @@ GameObject:
   - component: {fileID: 4230897524845098500}
   - component: {fileID: 4230897524845098522}
   - component: {fileID: 4230897524845098501}
+  - component: {fileID: 7735760507112649476}
+  - component: {fileID: 30369522551317451}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -382,7 +434,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4230897524845098522
 CanvasRenderer:
@@ -422,6 +474,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &7735760507112649476
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230897524845098503}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a09adddcf33e549ec90bd4ed65ca4a08, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &30369522551317451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230897524845098503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48da26d866bec443b88243cf2cae48c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4230897524910699285
 GameObject:
   m_ObjectHideFlags: 0

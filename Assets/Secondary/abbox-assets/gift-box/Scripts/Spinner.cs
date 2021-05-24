@@ -82,7 +82,7 @@ public class Spinner : MonoBehaviour
             }
         }
 
-        int randomGiftIndex = Random.Range(0, allGifts.Count - 1);
+        int randomGiftIndex = Random.Range(0, allGifts.Count);
         giftName = allGifts[randomGiftIndex];
         
         ShowGiftPrefab(giftName);
@@ -100,7 +100,7 @@ public class Spinner : MonoBehaviour
 
     IEnumerator TurnSpinner()
     {
-        int i = Random.Range(0, items.transform.childCount - 1);
+        int i = Random.Range(0, items.transform.childCount);
 
         if (spinning)
         {

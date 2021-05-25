@@ -7,6 +7,8 @@ TagManager:
   - Hole
   - Ball
   - Target
+  - Stun
+  - Slow
   layers:
   - Default
   - TransparentFX

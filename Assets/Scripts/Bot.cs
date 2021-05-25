@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GlobalVariables;
 
 public class Bot : MonoBehaviour
 {
+    public bool dontMove; // For chanllenge levels where bot should not move by itself
+
     GameObject target;
     // Vector from your position to target position
     Vector3 direction;
@@ -30,6 +33,12 @@ public class Bot : MonoBehaviour
     float holeCenterMargin = 10;
     Vector3 holePosition;
     float holeSuckSpeed = 2;
+
+    [SerializeField] List<Skill> allSkills = new List<Skill> { Skill.Speed, Skill.Weight, Skill.Push, Skill.Stun, Skill.Shield, Skill.Slow };
+
+    [SerializeField] GameObject stunParticles;
+    [SerializeField] GameObject slowParticles;
+    [SerializeField] GameObject pushParticles;
 
     void Start()
     {
@@ -64,7 +73,10 @@ public class Bot : MonoBehaviour
             }
             if (idle)
             {
-                ChargeAtTarget();
+                if (!dontMove)
+                {
+                    ChargeAtTarget();
+                }
             }
         }
     }
@@ -76,6 +88,26 @@ public class Bot : MonoBehaviour
             CoughtByHole(other.gameObject.transform.position);
         }
     }
+
+    #region Public Methods
+    // @access from Box script
+    public void GiveRandomGift()
+    {
+        // Delay is set from spinner, such as 3 seconds
+        Skill randomSkill = allSkills[Random.Range(0, allSkills.Count)];
+        StartCoroutine(GiveSkill(randomSkill));
+    }
+
+    public void StunBall()
+    {
+        stunParticles.SetActive(true);
+    }
+
+    public void SlowBall()
+    {
+        slowParticles.SetActive(true);
+    }
+    #endregion
 
     #region Private Methods
     void CoughtByHole(Vector3 _holePosition)
@@ -114,6 +146,14 @@ public class Bot : MonoBehaviour
         Debug.Log(speed);
         // Push yourself toward the target with set speed
         rb.AddForce(direction.normalized * speed, ForceMode.Impulse);
+    }
+    #endregion
+
+    #region Coroutines
+    IEnumerator GiveSkill(Skill skill)
+    {
+        yield return new WaitForSeconds(3);
+        Debug.Log(skill);
     }
     #endregion
 }

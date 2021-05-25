@@ -9,8 +9,6 @@ public class GiftWindow : MonoBehaviour
 
     [SerializeField] GameObject allSpinners;
 
-    List<GameObject> completeSpinners = new List<GameObject>();
-
     void Start()
     {
         player = FindObjectOfType<Player>();
@@ -23,7 +21,7 @@ public class GiftWindow : MonoBehaviour
     #endregion
 
     #region Private Methods
-    void StartSpinning()
+    public void StartSpinning()
     {
         // Save click
         //System.DateTimeOffset now = System.DateTimeOffset.UtcNow;

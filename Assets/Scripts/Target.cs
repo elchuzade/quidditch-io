@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    public bool dontMove; // For chanllenge levels where target should not move by itself
+
     [SerializeField] Rigidbody rb;
     [SerializeField] SphereCollider col;
 
@@ -16,7 +18,10 @@ public class Target : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(RotateTarget());
+        if (!dontMove)
+        {
+            StartCoroutine(RotateTarget());
+        }
     }
 
     void Update()

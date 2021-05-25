@@ -5,10 +5,16 @@ using UnityEngine;
 public class LevelStatus : MonoBehaviour
 {
     Player player;
+    [SerializeField] GameObject canvas; // Hiding for development purposes
     [SerializeField] Scoreboard scoreboard;
 
     [SerializeField] GameObject leadersWindowClosed;
     [SerializeField] GameObject leadersWindowOpened;
+
+    void Awake()
+    {
+        canvas.SetActive(true);
+    }
 
     void Start()
     {
@@ -17,11 +23,6 @@ public class LevelStatus : MonoBehaviour
 
         scoreboard.SetCoins(player.coins);
         scoreboard.SetDiamonds(player.diamonds);
-    }
-
-    void Update()
-    {
-        
     }
 
     #region Public Methods

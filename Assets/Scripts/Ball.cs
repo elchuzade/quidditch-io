@@ -9,10 +9,13 @@ public class Ball : MonoBehaviour
     public Rigidbody rb;
     public SphereCollider col;
 
+    // Proportional to baseSpeed and initial mass of 10 = 2000, 20 = 4000. will be added when weight skill is on
+    public float weightSkillSpeed = 0;
+    public float weightSkillMass = 20;
     public float debuffSpeed = 1;
     public float skillSpeed = 1;
-    public float weightSkillMass = 20;
-    public float weightSkillSpeed = 0; // Proportional to baseSpeed and initial mass of 10 = 2000, 20 = 4000
+    public float pushPower = 100;
+    public float pushRadius = 1000;
 
     public float slowDebuffDuration = 10;
     public float stunDebuffDuration = 5;
@@ -70,6 +73,10 @@ public class Ball : MonoBehaviour
     public bool slowDebuffStatus;
     public bool stunDebuffStatus;
 
+    public Target target;
+    public Ball[] botsAndPlayer;
+    public Barrier[] barriers;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Hole")
@@ -79,6 +86,27 @@ public class Ball : MonoBehaviour
     }
 
     #region Public Methods
+    public void Push(Vector3 direction, float power)
+    {
+        rb.AddForce(direction * power, ForceMode.Impulse);
+    }
+
+    public void FindAllPushables()
+    {
+        target = FindObjectOfType<Target>();
+        botsAndPlayer = FindObjectsOfType<Ball>();
+        barriers = FindObjectsOfType<Barrier>();
+    }
+
+    // Run from update of playerball and bot scripts
+    public void PushEverything()
+    {
+        if (pushSkillStatus)
+        {
+            StartCoroutine(PerformPushAction());
+        }
+    }
+
     // Runs on start methods in playerball and bot scripts
     public void SetInitialDebuffs()
     {
@@ -114,6 +142,7 @@ public class Ball : MonoBehaviour
         if (pushSkillStatus)
         {
             pushSkillParticles.SetActive(true);
+            PushEverything();
         }
         if (shieldSkillStatus)
         {
@@ -140,6 +169,7 @@ public class Ball : MonoBehaviour
                 break;
             case Skill.Push:
                 pushSkillParticles.SetActive(true);
+                PushEverything();
                 StartCoroutine(StopPushSkill(pushSkillDuration));
                 break;
             case Skill.Shield:
@@ -196,6 +226,7 @@ public class Ball : MonoBehaviour
     IEnumerator StopPushSkill(float duration)
     {
         pushSkillStatus = true;
+
         yield return new WaitForSeconds(duration);
 
         pushSkillStatus = false;
@@ -285,6 +316,44 @@ public class Ball : MonoBehaviour
         slowDebuffStatus = false;
 
         slowDebuffParticles.SetActive(false);
+    }
+
+    IEnumerator PerformPushAction()
+    {
+        yield return new WaitForSeconds(1);
+
+        if (Vector3.Distance(target.transform.position, transform.position) < pushRadius)
+        {
+            target.Push((target.transform.position - transform.position).normalized, pushPower);
+        }
+
+        for (int i = 0; i < botsAndPlayer.Length; i++)
+        {
+            if (Vector3.Distance(botsAndPlayer[i].transform.position, transform.position) < pushRadius)
+            {
+                botsAndPlayer[i].Push(
+                    (botsAndPlayer[i].transform.position - transform.position).normalized, pushPower
+                );
+            }
+        }
+
+        for (int i = 0; i < barriers.Length; i++)
+        {
+            if (barriers[i].barrierType == BarrierTypes.Light)
+            {
+                if (Vector3.Distance(barriers[i].transform.position, transform.position) < pushRadius)
+                {
+                    barriers[i].Push(
+                        (barriers[i].transform.position - transform.position).normalized, pushPower
+                    );
+                }
+            }
+        }
+
+        if (pushSkillStatus)
+        {
+            StartCoroutine(PerformPushAction());
+        }
     }
     #endregion
 }

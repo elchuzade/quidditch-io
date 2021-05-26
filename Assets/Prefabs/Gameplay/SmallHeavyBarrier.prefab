@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 252614898667294727}
   - component: {fileID: 252614898667294726}
   - component: {fileID: 252614898667294725}
+  - component: {fileID: 58537919743077848}
   m_Layer: 0
   m_Name: SmallHeavyBarrier
-  m_TagString: Untagged
+  m_TagString: Barrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252614898667294722}
-  m_LocalRotation: {x: -0, y: 0.8340554, z: -0, w: 0.5516807}
+  m_LocalRotation: {x: 0, y: 0.83405435, z: 0, w: 0.55168235}
   m_LocalPosition: {x: 270, y: 25, z: -157.3}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_Children: []
@@ -95,3 +96,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &58537919743077848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252614898667294722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 293f74e624ebc4d69b8336352a9b379d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  collideParticles: {fileID: 0}
+  barrierType: 1

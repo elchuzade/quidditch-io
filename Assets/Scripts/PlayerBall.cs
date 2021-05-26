@@ -18,6 +18,7 @@ public class PlayerBall : Ball
 
         SetInitialDebuffs();
         SetInitialSkills();
+        FindAllPushables();
     }
 
     void Update()

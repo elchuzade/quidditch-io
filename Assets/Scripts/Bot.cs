@@ -7,7 +7,6 @@ public class Bot : Ball
 {
     public bool dontMove; // For chanllenge levels where bot should not move by itself
 
-    GameObject target;
     // Vector from your position to target position
     Vector3 direction;
 
@@ -15,11 +14,12 @@ public class Bot : Ball
 
     void Start()
     {
-        target = FindObjectOfType<Target>().gameObject;
         initialPosition = transform.position;
 
         SetInitialDebuffs();
         SetInitialSkills();
+        FindAllPushables();
+
         GiveRandomGift();
     }
 

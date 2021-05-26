@@ -19792,9 +19792,12 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   rb: {fileID: 6026932570991724823}
   col: {fileID: 6026932570991724820}
+  weightSkillSpeed: 0
+  weightSkillMass: 10
   debuffSpeed: 1
   skillSpeed: 1
-  weightSkillMass: 10
+  pushPower: 1000
+  pushRadius: 100
   slowDebuffDuration: 10
   stunDebuffDuration: 5
   slowSkillDuration: 10
@@ -19829,6 +19832,9 @@ MonoBehaviour:
   shieldSkillStatus: 0
   slowDebuffStatus: 0
   stunDebuffStatus: 0
+  target: {fileID: 0}
+  botsAndPlayer: []
+  barriers: []
   dontMove: 1
   allSkills: 000000000100000002000000030000000400000005000000
 --- !u!1 &6245788227102476590

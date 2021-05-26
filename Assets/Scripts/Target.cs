@@ -42,6 +42,13 @@ public class Target : MonoBehaviour
         }
     }
 
+    #region Public Methods
+    public void Push(Vector3 direction, float power)
+    {
+        rb.AddForce(direction * power, ForceMode.Impulse);
+    }
+    #endregion
+
     #region Private Methods
     void AddScore()
     {
@@ -52,7 +59,7 @@ public class Target : MonoBehaviour
     {
         disabled = false;
         col.enabled = true;
-        transform.position = new Vector3(Random.Range(-50, 50), 25, Random.Range(-50, 50));
+        transform.position = new Vector3(Random.Range(-100, 100), 25, Random.Range(-100, 100));
         transform.localScale = Vector3.one;
     }
 

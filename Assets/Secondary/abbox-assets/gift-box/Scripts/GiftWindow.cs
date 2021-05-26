@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using static GlobalVariables;
 
 public class GiftWindow : MonoBehaviour
 {
@@ -8,6 +8,8 @@ public class GiftWindow : MonoBehaviour
     [SerializeField] LevelStatus levelStatus;
 
     [SerializeField] GameObject allSpinners;
+
+    [SerializeField] Ball ball;
 
     void Start()
     {
@@ -21,6 +23,11 @@ public class GiftWindow : MonoBehaviour
     #endregion
 
     #region Private Methods
+    public void SetBallSkill(Skill skill)
+    {
+        ball.SetGivenSkill(skill);
+    }
+
     public void StartSpinning()
     {
         // Save click
@@ -32,7 +39,6 @@ public class GiftWindow : MonoBehaviour
         for (int i = 0; i < allSpinners.transform.childCount; i++)
         {
             allSpinners.transform.GetChild(i).GetComponent<Spinner>().InitializeSpinner();
-            allSpinners.transform.GetChild(i).GetComponent<Spinner>().StartSpinning();
         }
     }
     #endregion

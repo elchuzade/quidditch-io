@@ -4886,7 +4886,7 @@ GameObject:
   - component: {fileID: 6005459226588387907}
   - component: {fileID: 6005459226588387906}
   m_Layer: 0
-  m_Name: PushParticles
+  m_Name: PushSkillParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

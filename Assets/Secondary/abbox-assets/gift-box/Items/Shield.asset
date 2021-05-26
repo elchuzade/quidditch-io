@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 1733180567882729442, guid: 20249aedaf29346579123394ffe3af68, type: 3}
-  itemName: Shield
+  itemName: 4
   chanceCount: 1

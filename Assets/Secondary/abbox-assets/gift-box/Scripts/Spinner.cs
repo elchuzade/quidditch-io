@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using static GlobalVariables;
 
 public class Spinner : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class Spinner : MonoBehaviour
 
     bool spinning;
 
-    string giftName;
+    Skill pickedSkill;
+
+    [SerializeField] GiftWindow giftWindow;
 
     #region Private Methods
     void CreateItems()
@@ -21,16 +24,16 @@ public class Spinner : MonoBehaviour
             GameObject item = Instantiate(itemObjects[i].itemPrefab, items.transform.position, Quaternion.identity);
             item.transform.SetParent(items.transform);
             item.transform.localScale = Vector3.one;
-            item.name = itemObjects[i].itemName;
+            item.name = itemObjects[i].itemName.ToString();
             item.SetActive(false);
         }
     }
 
-    void ShowGiftPrefab(string giftName)
+    void ShowGiftPrefab(Skill gift)
     {
         for (int i = 0; i < items.transform.childCount; i++)
         {
-            if (items.transform.GetChild(i).gameObject.name == giftName)
+            if (items.transform.GetChild(i).gameObject.name == gift.ToString())
             {
                 items.transform.GetChild(i).gameObject.SetActive(true);
             }
@@ -46,11 +49,12 @@ public class Spinner : MonoBehaviour
     public void InitializeSpinner()
     {
         CreateItems();
+        StartSpinning();
     }
 
-    public string GetGiftName()
+    public Skill GetGiftName()
     {
-        return giftName;
+        return pickedSkill;
     }
 
     public void StartSpinning()
@@ -72,7 +76,7 @@ public class Spinner : MonoBehaviour
     // Generate gift when spinning is complete
     public void GenerateGift()
     {
-        List<string> allGifts = new List<string>();
+        List<Skill> allGifts = new List<Skill>();
 
         // Add all gifts to the pool and withdraw one, based on the chance
         for (int i = 0; i < itemObjects.Count; i++)
@@ -84,9 +88,10 @@ public class Spinner : MonoBehaviour
         }
 
         int randomGiftIndex = Random.Range(0, allGifts.Count);
-        giftName = allGifts[randomGiftIndex];
+        pickedSkill = allGifts[randomGiftIndex];
         
-        ShowGiftPrefab(giftName);
+        ShowGiftPrefab(pickedSkill);
+        giftWindow.SetBallSkill(pickedSkill);
     }
     #endregion
 

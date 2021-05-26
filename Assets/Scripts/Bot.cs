@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GlobalVariables;
 
-public class Bot : MonoBehaviour
+public class Bot : Ball
 {
     public bool dontMove; // For chanllenge levels where bot should not move by itself
 
@@ -11,38 +11,16 @@ public class Bot : MonoBehaviour
     // Vector from your position to target position
     Vector3 direction;
 
-    [SerializeField] Rigidbody rb;
-    [SerializeField] SphereCollider col;
-
-    float baseSpeed = 2000;
-    float speed = 0;
-    // When score increases, the multiplier increases too
-    float baseSpeedStep = 2000;
-    float massStep = 50;
-
-    // This is not to wait until the full stop
-    float almostStopped = 100f;
-
-    // When you are sucked in to the hole disable controls
-    bool disabled = false;
-
-    // To allow aiming
-    bool idle = true;
-
-    // Distance to which the player needs to approach the hole center to reappear
-    float holeCenterMargin = 10;
-    Vector3 holePosition;
-    float holeSuckSpeed = 2;
-
-    [SerializeField] List<Skill> allSkills = new List<Skill> { Skill.Speed, Skill.Weight, Skill.Push, Skill.Stun, Skill.Shield, Skill.Slow };
-
-    [SerializeField] GameObject stunParticles;
-    [SerializeField] GameObject slowParticles;
-    [SerializeField] GameObject pushParticles;
+    public List<Skill> allSkills = new List<Skill> { Skill.Speed, Skill.Weight, Skill.Push, Skill.Stun, Skill.Shield, Skill.Slow };
 
     void Start()
     {
         target = FindObjectOfType<Target>().gameObject;
+        initialPosition = transform.position;
+
+        SetInitialDebuffs();
+        SetInitialSkills();
+        GiveRandomGift();
     }
 
     void Update()
@@ -81,14 +59,6 @@ public class Bot : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Hole")
-        {
-            CoughtByHole(other.gameObject.transform.position);
-        }
-    }
-
     #region Public Methods
     // @access from Box script
     public void GiveRandomGift()
@@ -97,41 +67,9 @@ public class Bot : MonoBehaviour
         Skill randomSkill = allSkills[Random.Range(0, allSkills.Count)];
         StartCoroutine(GiveSkill(randomSkill));
     }
-
-    public void StunBall()
-    {
-        stunParticles.SetActive(true);
-    }
-
-    public void SlowBall()
-    {
-        slowParticles.SetActive(true);
-    }
     #endregion
 
     #region Private Methods
-    void CoughtByHole(Vector3 _holePosition)
-    {
-        col.enabled = false;
-        holePosition = _holePosition;
-        disabled = true;
-        rb.velocity = Vector3.zero;
-    }
-
-    void AddScore()
-    {
-        Debug.Log("Scored");
-    }
-
-    void Reappear()
-    {
-        disabled = false;
-        col.enabled = true;
-        idle = true;
-        transform.position = new Vector3(Random.Range(-50, 50) + 375, 730, Random.Range(-50, 50));
-        transform.localScale = Vector3.one;
-    }
-
     void ChargeAtTarget()
     {
         // Aim at target
@@ -142,8 +80,8 @@ public class Bot : MonoBehaviour
 
         // Choose random speed multiplier like arrows for normal ball
         int speedMultiplier = Random.Range(0, 4);
-        speed = baseSpeed * speedMultiplier;
-        Debug.Log(speed);
+        speed = baseSpeed * speedMultiplier * debuffSpeed * skillSpeed + weightSkillSpeed;
+
         // Push yourself toward the target with set speed
         rb.AddForce(direction.normalized * speed, ForceMode.Impulse);
     }
@@ -153,7 +91,8 @@ public class Bot : MonoBehaviour
     IEnumerator GiveSkill(Skill skill)
     {
         yield return new WaitForSeconds(3);
-        Debug.Log(skill);
+
+        SetGivenSkill(skill);
     }
     #endregion
 }

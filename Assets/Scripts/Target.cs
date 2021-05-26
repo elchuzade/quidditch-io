@@ -52,7 +52,7 @@ public class Target : MonoBehaviour
     {
         disabled = false;
         col.enabled = true;
-        transform.position = new Vector3(Random.Range(-50, 50) + 375, 730, Random.Range(-50, 50));
+        transform.position = new Vector3(Random.Range(-50, 50), 25, Random.Range(-50, 50));
         transform.localScale = Vector3.one;
     }
 

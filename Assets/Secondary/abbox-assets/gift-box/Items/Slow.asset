@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Slow
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 1733180567882729442, guid: e3837e35a2e1e4e6e92c50508115b262, type: 3}
-  itemName: Slow
+  itemName: 5
   chanceCount: 1

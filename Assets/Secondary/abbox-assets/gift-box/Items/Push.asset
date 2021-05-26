@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Push
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 1733180567882729442, guid: 1203287a7ddb54a1ebec180e0cc36942, type: 3}
-  itemName: Push
+  itemName: 2
   chanceCount: 1

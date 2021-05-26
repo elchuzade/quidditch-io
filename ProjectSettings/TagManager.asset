@@ -9,6 +9,8 @@ TagManager:
   - Target
   - Stun
   - Slow
+  - MapLimit
+  - Barrier
   layers:
   - Default
   - TransparentFX

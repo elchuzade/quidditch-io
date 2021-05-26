@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Stun
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 1733180567882729442, guid: 7f0b34db359884dc58bc84f2a65b28ae, type: 3}
-  itemName: Stun
+  itemName: 3
   chanceCount: 1

@@ -5,7 +5,7 @@ using static GlobalVariables;
 public class Item : ScriptableObject
 {
     public GameObject itemPrefab;
-    [Header("* Must Be Unique")]
+    [Header("* Must Be Unique, Better change to ENUM")]
     public Skill itemName;
     public int chanceCount;
 }

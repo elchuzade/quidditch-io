@@ -13,7 +13,8 @@ public class PlayerData
     public bool nameChanged = false;
     public bool privacyPolicyAccepted = false;
     public bool privacyPolicyDeclined = false;
-    public List<int> allBalls = new List<int>();
+    public List<int> allBalls = new List<int>() { 1, 0, 0, 0, 0 };
+    public bool newChallengeUnlocked = false;
 
     public PlayerData (Player player)
     {
@@ -27,5 +28,6 @@ public class PlayerData
         nameChanged = player.nameChanged;
         privacyPolicyAccepted = player.privacyPolicyAccepted;
         privacyPolicyDeclined = player.privacyPolicyDeclined;
+        newChallengeUnlocked = player.newChallengeUnlocked;
     }
 }

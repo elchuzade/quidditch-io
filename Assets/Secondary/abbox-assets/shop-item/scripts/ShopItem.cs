@@ -1,49 +1,78 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static GlobalVariables;
 
 public class ShopItem : MonoBehaviour
 {
-    public enum Currency { Coins, Diamonds }
+    [SerializeField] int price;
+    [SerializeField] int index;
 
-    [SerializeField] GameObject selectedFrame;
-    [SerializeField] GameObject lockedFrame;
+    [SerializeField] Currency currency;
+
     [SerializeField] GameObject priceTag;
-    [SerializeField] GameObject coinsIcon;
-    [SerializeField] GameObject diamondsIcon;
-    [SerializeField] GameObject priceText;
-
-    public bool unlocked;
-    public string itemName;
-    public string itemPrice;
-    public Currency itemCurrency;
+    [SerializeField] Text priceText;
+    [SerializeField] GameObject diamondIcon;
+    [SerializeField] GameObject coinIcon;
+    [SerializeField] GameObject selectedText;
+    [SerializeField] GameObject selectButton;
+    [SerializeField] GameObject unlockButton;
 
     void Start()
     {
-        if (itemCurrency == Currency.Coins)
+        if (currency == Currency.Coin)
         {
-            coinsIcon.SetActive(true);
-            diamondsIcon.SetActive(false);
-        } else if (itemCurrency == Currency.Diamonds)
-        {
-            coinsIcon.SetActive(false);
-            diamondsIcon.SetActive(true);
+            diamondIcon.SetActive(false);
         }
-        priceText.GetComponent<Text>().text = itemPrice;
+        else
+        {
+            coinIcon.SetActive(false);
+        }
+        priceText.text = price.ToString();
+        selectedText.SetActive(false);
+        selectButton.SetActive(false);
     }
 
     #region Public Methods
+    // @access from ShopStatus
     public void SelectItem()
     {
-        selectedFrame.SetActive(true);
-        lockedFrame.SetActive(false);
-        priceTag.SetActive(false);
+        selectedText.SetActive(true);
+        selectButton.SetActive(false);
+        unlockButton.SetActive(false);
     }
 
+    // @access from ShopStatus
     public void UnlockItem()
     {
-        unlocked = true;
-        lockedFrame.SetActive(false);
+        selectedText.SetActive(false);
+        selectButton.SetActive(true);
         priceTag.SetActive(false);
+        unlockButton.SetActive(false);
+    }
+
+    // @access from ShopStatus
+    public void DeselectItem()
+    {
+        selectedText.SetActive(false);
+        selectButton.SetActive(true);
+    }
+
+    // @access from ShopStatus
+    public Currency GetCurrency()
+    {
+        return currency;
+    }
+
+    // @access from ShopStatus
+    public int GetPrice()
+    {
+        return price;
+    }
+
+    // @access from ShopStatus
+    public int GetIndex()
+    {
+        return index;
     }
     #endregion
 }

@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     public bool nameChanged = false;
     public bool privacyPolicyAccepted = false;
     public bool privacyPolicyDeclined = false;
-    public List<int> allBalls = new List<int>();
+    public List<int> allBalls = new List<int>() { 1, 0, 0, 0, 0 };
+    public bool newChallengeUnlocked = false;
 
     void Awake()
     {
@@ -36,15 +37,18 @@ public class Player : MonoBehaviour
 
     public void ResetPlayer()
     {
-        coins = 0;
-        diamonds = 0;
-        currentBallIndex = 0;
+        coins = 900;
+        diamonds = 900;
+        currentBallIndex = 2;
         nextLevelIndex = 1;
         playerName = "";
         playerCreated = false;
         nameChanged = false;
         privacyPolicyAccepted = false;
         privacyPolicyDeclined = false;
+        newChallengeUnlocked = true;
+
+        allBalls = new List<int>() { 1, 0, 1, 0, 0 };
 
         SaveSystem.SavePlayer(this);
     }
@@ -68,5 +72,6 @@ public class Player : MonoBehaviour
         nextLevelIndex = data.nextLevelIndex;
         privacyPolicyAccepted = data.privacyPolicyAccepted;
         privacyPolicyDeclined = data.privacyPolicyDeclined;
+        newChallengeUnlocked = data.newChallengeUnlocked;
     }
 }

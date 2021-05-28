@@ -47,15 +47,15 @@ public class Server : MonoBehaviour
 
     // LOCAL TESTING
     //string abboxAdsApi = "http://localhost:5002";
-    //string levitationMasterApi = "http://localhost:5001/v1/levitationMaster";
+    //string quidditchIOApi = "http://localhost:5001/v1/quidditchIO";
 
     // STAGING
     //string abboxAdsApi = "https://staging.ads.abbox.com";
-    //string levitationMasterApi = "https://staging.api.abboxgames.com/levitationMaster";
+    //string quidditchIOApi = "https://staging.api.abboxgames.com/quidditchIO";
 
     // PRODUCTION
     string abboxAdsApi = "https://ads.abbox.com";
-    string levitationMasterApi = "https://api.abboxgames.com/v1/levitationMaster";
+    string quidditchIOApi = "https://api.abboxgames.com/v1/quidditchIO";
 
     List<LeaderboardItem> top = new List<LeaderboardItem>();
     List<LeaderboardItem> before = new List<LeaderboardItem>();
@@ -80,7 +80,7 @@ public class Server : MonoBehaviour
     // CREATE NEW PLAYER
     public void CreatePlayer(Player player)
     {
-        string playerUrl = levitationMasterApi + "/player";
+        string playerUrl = quidditchIOApi + "/player";
 
         PlayerData playerData = new PlayerData();
         playerData.coins = player.coins;
@@ -131,7 +131,7 @@ public class Server : MonoBehaviour
     // SAVE PLAYER DATA
     public void SavePlayerData(Player player)
     {
-        string playerDataUrl = levitationMasterApi + "/data";
+        string playerDataUrl = quidditchIOApi + "/data";
 
         PlayerData playerData = new PlayerData();
         playerData.coins = player.coins;
@@ -216,7 +216,6 @@ public class Server : MonoBehaviour
 
             // Send request and wait for the desired response.
             yield return webRequest.SendWebRequest();
-
             if (webRequest.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.Log(webRequest.downloadHandler.text);
@@ -225,12 +224,11 @@ public class Server : MonoBehaviour
             }
             else
             {
-                Debug.Log(webRequest.downloadHandler.text);
                 // Parse the response from server to retrieve all data fields
                 VideoJson videoInfo = JsonUtility.FromJson<VideoJson>(webRequest.downloadHandler.text);
 
                 // Set the video link received from the server
-                //mainStatus.SetVideoLinkSuccess(videoInfo);
+                mainStatus.SetVideoLinkSuccess(videoInfo);
             }
         }
     }
@@ -240,7 +238,7 @@ public class Server : MonoBehaviour
     // CHANGE PLAYER NAME
     public void ChangePlayerName(string playerName)
     {
-        string nameUrl = levitationMasterApi + "/name";
+        string nameUrl = quidditchIOApi + "/name";
 
         PlayerName nameObject = new PlayerName();
         nameObject.playerName = playerName;
@@ -285,7 +283,7 @@ public class Server : MonoBehaviour
     // GET LEADERBOARD LIST
     public void GetLeaderboard()
     {
-        string leaderboardUrl = levitationMasterApi + "/leaderboard";
+        string leaderboardUrl = quidditchIOApi + "/leaderboard";
         StartCoroutine(LeaderboardCoroutine(leaderboardUrl));
     }
 

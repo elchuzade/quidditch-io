@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    LevelStatus levelStatus;
+
     public bool dontMove; // For chanllenge levels where target should not move by itself
 
     [SerializeField] Rigidbody rb;
@@ -15,6 +17,13 @@ public class Target : MonoBehaviour
 
     bool disabled = false;
     float speed = 2000;
+
+    Ball collidedBall;
+
+    void Awake()
+    {
+        levelStatus = FindObjectOfType<LevelStatus>();
+    }
 
     void Start()
     {
@@ -42,6 +51,14 @@ public class Target : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ball")
+        {
+            collidedBall = collision.gameObject.GetComponent<Ball>();
+        }
+    }
+
     #region Public Methods
     public void Push(Vector3 direction, float power)
     {
@@ -52,7 +69,11 @@ public class Target : MonoBehaviour
     #region Private Methods
     void AddScore()
     {
-        Debug.Log("Scored");
+        if (collidedBall != null)
+        {
+            levelStatus.AddScore(collidedBall.ballId);
+            collidedBall = null;
+        }
     }
 
     void Reappear()

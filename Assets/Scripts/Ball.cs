@@ -4,10 +4,18 @@ using static GlobalVariables;
 
 public class Ball : MonoBehaviour
 {
+    public LevelStatus levelStatus;
+
     public Vector3 initialPosition;
 
     public Rigidbody rb;
     public SphereCollider col;
+
+    // Data for leaderboard
+    public string ballName;
+    public int ballRank;
+    public int ballId;
+    public int ballScore;
 
     // Proportional to baseSpeed and initial mass of 10 = 2000, 20 = 4000. will be added when weight skill is on
     public float weightSkillSpeed = 0;
@@ -20,12 +28,12 @@ public class Ball : MonoBehaviour
     public float slowDebuffDuration = 10;
     public float stunDebuffDuration = 5;
 
-    public float slowSkillDuration = 10;
-    public float stunSkillDuration = 10;
-    public float speedSkillDuration = 10;
-    public float weightSkillDuration = 10;
-    public float shieldSkillDuration = 10;
     public float pushSkillDuration = 10;
+    public float shieldSkillDuration = 10;
+    public float slowSkillDuration = 10;
+    public float speedSkillDuration = 10;
+    public float stunSkillDuration = 10;
+    public float weightSkillDuration = 10;
 
     public float baseSpeed = 2000;
     public float speed = 0;
@@ -34,7 +42,7 @@ public class Ball : MonoBehaviour
     public float massStep = 50;
 
     // This is not to wait until the full stop
-    public float almostStopped = 100f;
+    public float almostStopped = 500f;
 
     // When you are sucked in to the hole disable controls
     public bool disabled = false;
@@ -55,19 +63,19 @@ public class Ball : MonoBehaviour
     // Skills
     [Header("Skills")]
     public GameObject pushSkillParticles;
-    public GameObject slowSkillParticles;
-    public GameObject stunSkillParticles;
-    public GameObject speedSkillParticles;
-    public GameObject weightSkillParticles;
     public GameObject shieldSkillParticles;
+    public GameObject slowSkillParticles;
+    public GameObject speedSkillParticles;
+    public GameObject stunSkillParticles;
+    public GameObject weightSkillParticles;
 
     // These are skills that a ball has as an attack
-    public bool slowSkillStatus;
-    public bool stunSkillStatus;
-    public bool weightSkillStatus;
-    public bool speedSkillStatus;
     public bool pushSkillStatus;
     public bool shieldSkillStatus;
+    public bool slowSkillStatus;
+    public bool speedSkillStatus;
+    public bool stunSkillStatus;
+    public bool weightSkillStatus;
 
     // These are affects that have been added to current ball by another ball
     public bool slowDebuffStatus;
@@ -77,6 +85,8 @@ public class Ball : MonoBehaviour
     public Ball[] botsAndPlayer;
     public Barrier[] barriers;
 
+    Ball collidedBall;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Hole")
@@ -85,7 +95,42 @@ public class Ball : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ball")
+        {
+            collidedBall = collision.gameObject.GetComponent<Ball>();
+        }
+    }
+
     #region Public Methods
+    public void SetName(string _name)
+    {
+        ballName = _name;
+    }
+
+    public float GetSkillDuration(Skill skill)
+    {
+        switch (skill)
+        {
+            case Skill.Push:
+                return pushSkillDuration;
+            case Skill.Shield:
+                return shieldSkillDuration;
+            case Skill.Slow:
+                return slowSkillDuration;
+            case Skill.Speed:
+                return speedSkillDuration;
+            case Skill.Stun:
+                return stunSkillDuration;
+            case Skill.Weight:
+                return weightSkillDuration;
+            default:
+                Debug.Log("Error!");
+                return 0;
+        }
+    }
+
     public void Push(Vector3 direction, float power)
     {
         rb.AddForce(direction * power, ForceMode.Impulse);
@@ -123,22 +168,6 @@ public class Ball : MonoBehaviour
     // Runs on start methods in playerball and bot scripts
     public void SetInitialSkills()
     {
-        if (slowSkillStatus)
-        {
-            slowSkillParticles.SetActive(true);
-        }
-        if (stunSkillStatus)
-        {
-            stunSkillParticles.SetActive(true);
-        }
-        if (weightSkillStatus)
-        {
-            weightSkillParticles.SetActive(true);
-        }
-        if (speedSkillStatus)
-        {
-            speedSkillParticles.SetActive(true);
-        }
         if (pushSkillStatus)
         {
             pushSkillParticles.SetActive(true);
@@ -148,6 +177,22 @@ public class Ball : MonoBehaviour
         {
             shieldSkillParticles.SetActive(true);
         }
+        if (slowSkillStatus)
+        {
+            slowSkillParticles.SetActive(true);
+        }
+        if (speedSkillStatus)
+        {
+            speedSkillParticles.SetActive(true);
+        }
+        if (stunSkillStatus)
+        {
+            stunSkillParticles.SetActive(true);
+        }
+        if (weightSkillStatus)
+        {
+            weightSkillParticles.SetActive(true);
+        }
     }
 
     // After spinner gave some skill
@@ -155,18 +200,6 @@ public class Ball : MonoBehaviour
     {
         switch (skill)
         {
-            case Skill.Weight:
-                weightSkillParticles.SetActive(true);
-                StartCoroutine(StopWeightSkill(weightSkillDuration));
-                break;
-            case Skill.Speed:
-                speedSkillParticles.SetActive(true);
-                StartCoroutine(StopSpeedSkill(speedSkillDuration));
-                break;
-            case Skill.Stun:
-                stunSkillParticles.SetActive(true);
-                StartCoroutine(StopStunSkill(stunSkillDuration));
-                break;
             case Skill.Push:
                 pushSkillParticles.SetActive(true);
                 PushEverything();
@@ -179,6 +212,18 @@ public class Ball : MonoBehaviour
             case Skill.Slow:
                 slowSkillParticles.SetActive(true);
                 StartCoroutine(StopSlowSkill(slowSkillDuration));
+                break;
+            case Skill.Speed:
+                speedSkillParticles.SetActive(true);
+                StartCoroutine(StopSpeedSkill(speedSkillDuration));
+                break;
+            case Skill.Stun:
+                stunSkillParticles.SetActive(true);
+                StartCoroutine(StopStunSkill(stunSkillDuration));
+                break;
+            case Skill.Weight:
+                weightSkillParticles.SetActive(true);
+                StartCoroutine(StopWeightSkill(weightSkillDuration));
                 break;
         }
     }
@@ -199,7 +244,11 @@ public class Ball : MonoBehaviour
 
     public void AddScore()
     {
-        Debug.Log("Scored");
+        if (collidedBall != null)
+        {
+            levelStatus.AddScore(collidedBall.ballId);
+            collidedBall = null;
+        }
     }
 
     public void Reappear()

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Box : MonoBehaviour
 {
-    GiftWindow giftWindow;
+    Spinner spinner;
 
     [SerializeField] GameObject collectParticles;
     [SerializeField] GameObject components;
@@ -11,7 +11,7 @@ public class Box : MonoBehaviour
 
     void Start()
     {
-        giftWindow = FindObjectOfType<GiftWindow>();    
+        spinner = FindObjectOfType<Spinner>();    
     }
 
     void OnTriggerEnter(Collider other)
@@ -19,14 +19,12 @@ public class Box : MonoBehaviour
         if (other.gameObject.tag == "Ball")
         {
             // If the hit is ball then run spinner else give a random skill
-            Ball ball = other.gameObject.GetComponent<Ball>();
-            if (ball != null)
+            if (other.GetComponent<Ball>().ballId == 0)
             {
                 // Turn the spinner
-                giftWindow.StartSpinning();
+                spinner.StartSpinning();
             } else
             {
-                // Give random gift to the bot with 3 seconds delay as if it is spinning
                 Bot bot = other.gameObject.GetComponent<Bot>();
                 if (bot != null)
                 {

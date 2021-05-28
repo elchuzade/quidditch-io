@@ -1,18 +1,238 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static Server;
 
 public class MainStatus : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Player player;
+    Navigator navigator;
+    Server server;
+    TV tv;
+
+    [SerializeField] Scoreboard scoreboard;
+
+    [SerializeField] GameObject challengesButton;
+    [SerializeField] GameObject hapticsButton;
+    [SerializeField] GameObject soundsButton;
+    [SerializeField] GameObject privacyWindow;
+    [SerializeField] GameObject quitGameWindow;
+    [SerializeField] GameObject leaderboardButton;
+
+    [SerializeField] GameObject ballParent;
+    [SerializeField] GameObject[] allBalls;
+
+    void Awake()
     {
-        
+        navigator = FindObjectOfType<Navigator>();
+        server = FindObjectOfType<Server>();
+        tv = FindObjectOfType<TV>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        player = FindObjectOfType<Player>();
+        //player.ResetPlayer();
+        player.LoadPlayer();
+
+        server.GetVideoLink();
+
+        if (player.privacyPolicyAccepted)
+        {
+            privacyWindow.SetActive(false);
+            leaderboardButton.GetComponent<Button>().onClick.AddListener(() => ClickLeaderboardButton());
+
+            if (!player.playerCreated)
+            {
+                //server.CreatePlayer(player);
+            }
+            else
+            {
+                //server.SavePlayerData(player);
+            }
+        }
+        else
+        {
+            privacyWindow.SetActive(true);
+            leaderboardButton.GetComponent<Button>().onClick.AddListener(() => ShowPrivacyPolicy());
+            leaderboardButton.GetComponent<Image>().color = new Color32(255, 197, 158, 100);
+        }
+
+        SetScoreboardValues();
+        SetButtonInitialState();
+        SetChallengesButton();
+
+        GameObject ballPrefab = Instantiate(allBalls[player.currentBallIndex], ballParent.transform.position, Quaternion.identity);
+        ballPrefab.transform.SetParent(ballParent.transform);
     }
+
+    #region Private Methods
+    void SetChallengesButton()
+    {
+        if (player.newChallengeUnlocked)
+        {
+            challengesButton.transform.Find("Rocket").GetComponent<Animator>().enabled = true;
+        } else
+        {
+            challengesButton.transform.Find("Rocket").GetComponent<Animator>().enabled = false;
+        }
+    }
+
+    void SetScoreboardValues()
+    {
+        scoreboard.SetCoins(player.coins);
+        scoreboard.SetDiamonds(player.diamonds);
+    }
+
+    // Set initial states of haptics button based on player prefs
+    void SetButtonInitialState()
+    {
+        // Haptics
+        if (PlayerPrefs.GetInt("Haptics") == 1)
+        {
+            hapticsButton.transform.Find("Disabled").gameObject.SetActive(false);
+        }
+        else
+        {
+            hapticsButton.transform.Find("Disabled").gameObject.SetActive(true);
+        }
+        // Sounds
+        if (PlayerPrefs.GetInt("Sounds") == 1)
+        {
+            soundsButton.transform.Find("Disabled").gameObject.SetActive(false);
+        }
+        else
+        {
+            soundsButton.transform.Find("Disabled").gameObject.SetActive(true);
+        }
+    }
+    #endregion
+
+    #region Public Methods
+    // @access from Server script
+    public void CreatePlayerSuccess()
+    {
+        player.playerCreated = true;
+        player.SavePlayer();
+    }
+
+    // @access from Server script
+    public void SetVideoLinkSuccess(VideoJson response)
+    {
+        tv.SetAdLink(response.video);
+        tv.SetAdButton(response.website);
+    }
+
+    // @access from MainStatus canvas
+    public void ClickPlayButton()
+    {
+        navigator.LoadNextLevel(player.nextLevelIndex);
+    }
+
+    // @access from MainStatus canvas
+    public void ClickChallengesButton()
+    {
+        navigator.LoadChallenges();
+    }
+
+    // @access from MainStatus canvas
+    public void ClickShopButton()
+    {
+        navigator.LoadShop();
+    }
+
+    // @access from MainStatus canvas
+    public void ClickLeaderboardButton()
+    {
+        navigator.LoadLeaderboard();
+    }
+
+    // @access from MainStatus canvas
+    public void ClickHapticsButton()
+    {
+        if (PlayerPrefs.GetInt("Haptics") == 1)
+        {
+            // Set button state to disabled
+            hapticsButton.transform.Find("Disabled").gameObject.SetActive(true);
+            // If haptics are turned on => turn them off
+            PlayerPrefs.SetInt("Haptics", 0);
+        }
+        else
+        {
+            // Set button state to enabled
+            hapticsButton.transform.Find("Disabled").gameObject.SetActive(false);
+            // If haptics are turned off => turn them on
+            PlayerPrefs.SetInt("Haptics", 1);
+        }
+    }
+
+    // @access from MainStatus canvas
+    public void ClickSoundsButton()
+    {
+        if (PlayerPrefs.GetInt("Sounds") == 1)
+        {
+            // Set button state to disabled
+            soundsButton.transform.Find("Disabled").gameObject.SetActive(true);
+            // If sounds are turned on => turn them off
+            PlayerPrefs.SetInt("Sounds", 0);
+        }
+        else
+        {
+            // Set button state to enabled
+            soundsButton.transform.Find("Disabled").gameObject.SetActive(false);
+            // If sounds are turned off => turn them on
+            PlayerPrefs.SetInt("Sounds", 1);
+        }
+    }
+
+    // @access from MainStatus canvas
+    public void ShowPrivacyPolicy()
+    {
+        privacyWindow.SetActive(true);
+    }
+
+    // @access from MainStatus canvas
+    public void ClickDeclinePrivacyPolicy()
+    {
+        leaderboardButton.GetComponent<Button>().onClick.AddListener(() => privacyWindow.SetActive(true));
+        privacyWindow.SetActive(false);
+    }
+
+    // @access from MainStatus canvas
+    public void ClickAcceptPrivacyPolicy()
+    {
+        leaderboardButton.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        leaderboardButton.GetComponent<Button>().onClick.AddListener(() => ClickLeaderboardButton());
+
+        privacyWindow.transform.localScale = new Vector3(0, 1, 1);
+        privacyWindow.SetActive(false);
+        player.privacyPolicyAccepted = true;
+        player.SavePlayer();
+
+        //server.CreatePlayer(player);
+    }
+
+    // @access from MainStatus canvas
+    public void ClickQuitGame()
+    {
+        Application.Quit();
+    }
+
+    // @access from MainStatus canvas
+    public void CancelQuitGame()
+    {
+        quitGameWindow.SetActive(false);
+    }
+
+    // @access from MainStatus canvas
+    public void ClickTermsOfUse()
+    {
+        Application.OpenURL("https://abboxgames.com/terms-of-use");
+    }
+
+    // @access from MainStatus canvas
+    public void ClickPrivacyPolicy()
+    {
+        Application.OpenURL("https://abboxgames.com/privacy-policy");
+    }
+    #endregion
 }

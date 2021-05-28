@@ -58,6 +58,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38998025d8ace4e048b55a23e0cd6e7f, type: 2}
   items: {fileID: 5242045186647590867}
   stopSpinnerTimer: 3
+  giftWindow: {fileID: 0}
 --- !u!1 &5242045186647590867
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,5 +92,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 145, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -65,6 +65,15 @@ public class Spinner : MonoBehaviour
         StartCoroutine(StopSpinner());
     }
 
+    public void HideSpinner()
+    {
+        for (int i = 0; i < items.transform.childCount; i++)
+        {
+            items.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        spinning = false;
+    }
+
     public void ResetSpinner()
     {
         for (int i = 0; i < items.transform.childCount; i++)

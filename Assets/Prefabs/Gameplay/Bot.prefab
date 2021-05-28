@@ -19810,7 +19810,7 @@ MonoBehaviour:
   speed: 0
   baseSpeedStep: 2000
   massStep: 50
-  almostStopped: 100
+  almostStopped: 500
   disabled: 0
   idle: 1
   holeCenterMargin: 10

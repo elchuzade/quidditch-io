@@ -12,6 +12,11 @@ public class PlayerBall : Ball
     public GameObject arrowTwo;
     public GameObject arrowThree;
 
+    void Awake()
+    {
+        levelStatus = FindObjectOfType<LevelStatus>();
+    }
+
     void Start()
     {
         initialPosition = transform.position;

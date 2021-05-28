@@ -12,6 +12,11 @@ public class Bot : Ball
 
     public List<Skill> allSkills = new List<Skill> { Skill.Speed, Skill.Weight, Skill.Push, Skill.Stun, Skill.Shield, Skill.Slow };
 
+    void Awake()
+    {
+        levelStatus = FindObjectOfType<LevelStatus>();
+    }
+
     void Start()
     {
         initialPosition = transform.position;

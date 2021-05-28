@@ -1,18 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LeaderboardStatus : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Player player;
+    Navigator navigator;
+    Server server;
+
+    void Awake()
     {
-        
+        navigator = FindObjectOfType<Navigator>();
+        server = FindObjectOfType<Server>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        player = FindObjectOfType<Player>();
+        player.ResetPlayer();
+        player.LoadPlayer();
     }
+
+    #region Public Methods
+    public void ClickBackButton()
+    {
+        navigator.LoadMainScene();
+    }
+    #endregion
 }

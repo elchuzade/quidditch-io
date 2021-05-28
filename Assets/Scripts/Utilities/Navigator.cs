@@ -28,9 +28,9 @@ public class Navigator : MonoBehaviour
         SceneManager.LoadScene("LeaderboardScene");
     }
 
-    public void LoadChests()
+    public void LoadChallenges()
     {
-        SceneManager.LoadScene("ChestsScene");
+        SceneManager.LoadScene("ChallengesScene");
     }
 
     public void LoadNextLevel(int nextLevelIndex)

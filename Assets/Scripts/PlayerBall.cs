@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBall : Ball
 {
@@ -12,6 +13,11 @@ public class PlayerBall : Ball
     public GameObject arrowTwo;
     public GameObject arrowThree;
 
+    public GameObject targetArrows;
+    public GameObject targetArrow;
+
+    public float targetArrowDistance = 150;
+
     void Awake()
     {
         levelStatus = FindObjectOfType<LevelStatus>();
@@ -24,6 +30,7 @@ public class PlayerBall : Ball
         SetInitialDebuffs();
         SetInitialSkills();
         FindAllPushables();
+        InstantiateTargetArrows();
     }
 
     void Update()
@@ -64,10 +71,49 @@ public class PlayerBall : Ball
         if (idle)
         {
             ShowArrows();
+            ShowTargetArrows();
         }
     }
 
     #region Private Methods
+    void InstantiateTargetArrows()
+    {
+        for (int i = 0; i < targets.Length; i++)
+        {
+            GameObject targetArrowInstance = Instantiate(targetArrow, targetArrows.transform.position, Quaternion.identity);
+            targetArrowInstance.transform.SetParent(targetArrows.transform);
+            targetArrowInstance.transform.localScale = Vector3.one;
+
+            Vector3 arrowDirection = targets[i].transform.position - transform.position;
+            float angle = Mathf.Atan2(arrowDirection.z, arrowDirection.x) * Mathf.Rad2Deg;
+
+            targetArrowInstance.transform.rotation = Quaternion.Euler(90, 0, angle - 90);
+        }
+    }
+
+    void ShowTargetArrows()
+    {
+        // If distance from each target to its arrow is greater than certain distance then show and face the target
+        for (int i = 0; i < targetArrows.transform.childCount; i++)
+        {
+            if (Vector3.Distance(targets[i].transform.position, transform.position) < targetArrowDistance)
+            {
+                targetArrows.transform.GetChild(i).gameObject.SetActive(false);
+            } else
+            {
+                targetArrows.transform.GetChild(i).gameObject.SetActive(true);
+
+                targetArrows.transform.GetChild(i).transform.SetParent(targetArrows.transform);
+                targetArrows.transform.GetChild(i).transform.localScale = Vector3.one;
+
+                Vector3 arrowDirection = targets[i].transform.position - transform.position;
+                float angle = Mathf.Atan2(arrowDirection.z, arrowDirection.x) * Mathf.Rad2Deg;
+
+                targetArrows.transform.GetChild(i).transform.rotation = Quaternion.Euler(90, 0, angle - 90);
+            }
+        }
+    }
+
     void ShowArrows()
     {
         direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;

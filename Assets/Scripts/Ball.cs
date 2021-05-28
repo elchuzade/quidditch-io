@@ -26,13 +26,11 @@ public class Ball : MonoBehaviour
     public float pushRadius = 1000;
 
     public float slowDebuffDuration = 10;
-    public float stunDebuffDuration = 5;
 
     public float pushSkillDuration = 10;
     public float shieldSkillDuration = 10;
     public float slowSkillDuration = 10;
     public float speedSkillDuration = 10;
-    public float stunSkillDuration = 10;
     public float weightSkillDuration = 10;
 
     public float baseSpeed = 2000;
@@ -42,7 +40,7 @@ public class Ball : MonoBehaviour
     public float massStep = 50;
 
     // This is not to wait until the full stop
-    public float almostStopped = 500f;
+    public float almostStopped = 100f;
 
     // When you are sucked in to the hole disable controls
     public bool disabled = false;
@@ -57,7 +55,6 @@ public class Ball : MonoBehaviour
 
     // Debuffs
     [Header("Debuff")]
-    public GameObject stunDebuffParticles;
     public GameObject slowDebuffParticles;
 
     // Skills
@@ -66,7 +63,6 @@ public class Ball : MonoBehaviour
     public GameObject shieldSkillParticles;
     public GameObject slowSkillParticles;
     public GameObject speedSkillParticles;
-    public GameObject stunSkillParticles;
     public GameObject weightSkillParticles;
 
     // These are skills that a ball has as an attack
@@ -74,14 +70,12 @@ public class Ball : MonoBehaviour
     public bool shieldSkillStatus;
     public bool slowSkillStatus;
     public bool speedSkillStatus;
-    public bool stunSkillStatus;
     public bool weightSkillStatus;
 
     // These are affects that have been added to current ball by another ball
     public bool slowDebuffStatus;
-    public bool stunDebuffStatus;
 
-    public Target target;
+    public Target[] targets;
     public Ball[] botsAndPlayer;
     public Barrier[] barriers;
 
@@ -121,8 +115,6 @@ public class Ball : MonoBehaviour
                 return slowSkillDuration;
             case Skill.Speed:
                 return speedSkillDuration;
-            case Skill.Stun:
-                return stunSkillDuration;
             case Skill.Weight:
                 return weightSkillDuration;
             default:
@@ -138,7 +130,7 @@ public class Ball : MonoBehaviour
 
     public void FindAllPushables()
     {
-        target = FindObjectOfType<Target>();
+        targets = FindObjectsOfType<Target>();
         botsAndPlayer = FindObjectsOfType<Ball>();
         barriers = FindObjectsOfType<Barrier>();
     }
@@ -158,10 +150,6 @@ public class Ball : MonoBehaviour
         if (slowDebuffStatus)
         {
             slowDebuffParticles.SetActive(true);
-        }
-        if (stunDebuffStatus)
-        {
-            stunDebuffParticles.SetActive(true);
         }
     }
 
@@ -184,10 +172,6 @@ public class Ball : MonoBehaviour
         if (speedSkillStatus)
         {
             speedSkillParticles.SetActive(true);
-        }
-        if (stunSkillStatus)
-        {
-            stunSkillParticles.SetActive(true);
         }
         if (weightSkillStatus)
         {
@@ -217,10 +201,6 @@ public class Ball : MonoBehaviour
                 speedSkillParticles.SetActive(true);
                 StartCoroutine(StopSpeedSkill(speedSkillDuration));
                 break;
-            case Skill.Stun:
-                stunSkillParticles.SetActive(true);
-                StartCoroutine(StopStunSkill(stunSkillDuration));
-                break;
             case Skill.Weight:
                 weightSkillParticles.SetActive(true);
                 StartCoroutine(StopWeightSkill(weightSkillDuration));
@@ -228,25 +208,21 @@ public class Ball : MonoBehaviour
         }
     }
 
-    // Runs from skill script when it hits you with stun
-    public void StunBall()
-    {
-        stunDebuffParticles.SetActive(true);
-        StartCoroutine(StopStunDebuff(stunSkillDuration));
-    }
-
     // Runs from skill script when it hits you with slow
     public void SlowBall()
     {
-        slowDebuffParticles.SetActive(true);
-        StartCoroutine(StopSlowDebuff(slowSkillDuration));
+        if (!shieldSkillStatus)
+        {
+            slowDebuffParticles.SetActive(true);
+            StartCoroutine(StopSlowDebuff(slowSkillDuration));
+        }
     }
 
     public void AddScore()
     {
         if (collidedBall != null)
         {
-            levelStatus.AddScore(collidedBall.ballId);
+            levelStatus.AddScore(collidedBall.ballId, false);
             collidedBall = null;
         }
     }
@@ -330,30 +306,6 @@ public class Ball : MonoBehaviour
         slowSkillParticles.SetActive(false);
     }
 
-    IEnumerator StopStunSkill(float duration)
-    {
-        stunSkillStatus = true;
-
-        yield return new WaitForSeconds(duration);
-
-        stunSkillStatus = false;
-
-        stunSkillParticles.SetActive(false);
-    }
-
-    IEnumerator StopStunDebuff(float duration)
-    {
-        debuffSpeed = 0;
-        stunDebuffStatus = true;
-
-        yield return new WaitForSeconds(duration);
-
-        debuffSpeed = 1;
-        stunDebuffStatus = false;
-
-        stunDebuffParticles.SetActive(false);
-    }
-
     IEnumerator StopSlowDebuff(float duration)
     {
         debuffSpeed = 0.25f;
@@ -371,9 +323,12 @@ public class Ball : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        if (Vector3.Distance(target.transform.position, transform.position) < pushRadius)
+        for (int i = 0; i < targets.Length; i++)
         {
-            target.Push((target.transform.position - transform.position).normalized, pushPower);
+            if (Vector3.Distance(targets[i].transform.position, transform.position) < pushRadius)
+            {
+                targets[i].Push((targets[i].transform.position - transform.position).normalized, pushPower);
+            }
         }
 
         for (int i = 0; i < botsAndPlayer.Length; i++)

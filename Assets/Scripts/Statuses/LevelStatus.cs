@@ -10,7 +10,6 @@ public class LevelStatus : MonoBehaviour
     [SerializeField] RandomName randomNames;
 
     [SerializeField] GameObject canvas; // Hiding for development purposes
-    [SerializeField] Scoreboard scoreboard;
 
     [SerializeField] GameObject leadersWindowClosed;
     [SerializeField] GameObject leadersWindowOpened;
@@ -22,13 +21,23 @@ public class LevelStatus : MonoBehaviour
     [SerializeField] Text fifth;
 
     Color32 yourColor = new Color32(146, 255, 107, 255);
-    int yourFontSize = 22;
+    Color32 defaultColor = new Color32(255, 255, 255, 255);
+    int yourFontSize = 28;
+    int defaultFontSize = 24;
 
     [SerializeField] GameObject bots;
     [SerializeField] Ball[] balls;
 
     [SerializeField] GameObject ballParent;
     [SerializeField] GameObject[] allBalls;
+
+    [SerializeField] Text timer;
+    [SerializeField] Text targetKills;
+    [SerializeField] Text botKills;
+
+    int botKillsCount = 0;
+    int targetKillsCount = 0;
+    float secondsLeft = 120;
 
     void Awake()
     {
@@ -42,25 +51,45 @@ public class LevelStatus : MonoBehaviour
         player = FindObjectOfType<Player>();
         player.LoadPlayer();
 
-        SetCanvasValues();
         InstantiatePlayerBall();
         SetRandomNames();
 
         SetLeaderboard();
+        SetCanvasValues();
+    }
+
+    void Update()
+    {
+        if (secondsLeft > 0)
+        {
+            secondsLeft -= Time.deltaTime;
+            FormatTime(secondsLeft);
+        } else
+        {
+            Debug.Log("Game Over");
+        }
     }
 
     #region Private Methods
+    void SetCanvasValues()
+    {
+        targetKills.text = targetKillsCount.ToString();
+        botKills.text = botKillsCount.ToString();
+    }
+
+    void FormatTime(float totalSeconds)
+    {
+        int minutes = (int)totalSeconds / 60;
+        int seconds = (int)totalSeconds - (minutes * 60);
+
+        timer.text = minutes.ToString() + ":" + seconds.ToString();
+    }
+
     void InstantiatePlayerBall()
     {
         GameObject ballInstance = Instantiate(allBalls[player.currentBallIndex], ballParent.transform.position, Quaternion.identity);
         ballInstance.transform.SetParent(ballParent.transform);
         ballInstance.transform.localScale = new Vector3(20, 20, 20);
-    }
-
-    void SetCanvasValues()
-    {
-        scoreboard.SetCoins(player.coins);
-        scoreboard.SetDiamonds(player.diamonds);
     }
 
     void SetRandomNames()
@@ -83,6 +112,11 @@ public class LevelStatus : MonoBehaviour
                     first.color = yourColor;
                     first.fontSize = yourFontSize;
                 }
+                else
+                {
+                    first.color = defaultColor;
+                    first.fontSize = defaultFontSize;
+                }
                 break;
             case 1:
                 second.text = balls[i].ballName;
@@ -90,6 +124,11 @@ public class LevelStatus : MonoBehaviour
                 {
                     second.color = yourColor;
                     second.fontSize = yourFontSize;
+                }
+                else
+                {
+                    second.color = defaultColor;
+                    second.fontSize = defaultFontSize;
                 }
                 break;
             case 2:
@@ -99,6 +138,11 @@ public class LevelStatus : MonoBehaviour
                     third.color = yourColor;
                     third.fontSize = yourFontSize;
                 }
+                else
+                {
+                    third.color = defaultColor;
+                    third.fontSize = defaultFontSize;
+                }
                 break;
             case 3:
                 fourth.text = balls[i].ballName;
@@ -107,6 +151,11 @@ public class LevelStatus : MonoBehaviour
                     fourth.color = yourColor;
                     fourth.fontSize = yourFontSize;
                 }
+                else
+                {
+                    fourth.color = defaultColor;
+                    fourth.fontSize = defaultFontSize;
+                }
                 break;
             case 4:
                 fifth.text = balls[i].ballName;
@@ -114,6 +163,11 @@ public class LevelStatus : MonoBehaviour
                 {
                     fifth.color = yourColor;
                     fifth.fontSize = yourFontSize;
+                }
+                else
+                {
+                    fifth.color = defaultColor;
+                    fifth.fontSize = defaultFontSize;
                 }
                 break;
         }
@@ -146,7 +200,7 @@ public class LevelStatus : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void AddScore(int id)
+    public void AddScore(int id, bool target)
     {
         for (int i = 0; i < balls.Length; i++)
         {
@@ -156,6 +210,18 @@ public class LevelStatus : MonoBehaviour
             }
         }
         SetLeaderboard();
+        if (id == 0)
+        {
+            // My player scored
+            if (target)
+            {
+                targetKillsCount++;
+            } else
+            {
+                botKillsCount++;
+            }
+            SetCanvasValues();
+        }
     }
 
     public void ClickOpenedLeadersWindow()
@@ -168,11 +234,6 @@ public class LevelStatus : MonoBehaviour
     {
         leadersWindowClosed.SetActive(false);
         leadersWindowOpened.SetActive(true);
-    }
-
-    public void ClickBackButton()
-    {
-        navigator.LoadMainScene();
     }
     #endregion
 }

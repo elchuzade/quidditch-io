@@ -10,7 +10,7 @@ public class Bot : Ball
     // Vector from your position to target position
     Vector3 direction;
 
-    public List<Skill> allSkills = new List<Skill> { Skill.Speed, Skill.Weight, Skill.Push, Skill.Stun, Skill.Shield, Skill.Slow };
+    public List<Skill> allSkills = new List<Skill> { Skill.Speed, Skill.Weight, Skill.Push, Skill.Shield, Skill.Slow };
 
     void Awake()
     {
@@ -77,8 +77,9 @@ public class Bot : Ball
     #region Private Methods
     void ChargeAtTarget()
     {
-        // Aim at target
-        direction = target.transform.position - transform.position;
+        Target randomTarget = targets[Random.Range(0, targets.Length)];
+        // Aim at random target
+        direction = randomTarget.transform.position - transform.position;
         // Add small error to the vector to make it look not perfectly aimed
         Vector3 error = new Vector3(Random.Range(0, 100), 0, Random.Range(0, 100));
         direction += error;

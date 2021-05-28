@@ -71,7 +71,7 @@ public class Target : MonoBehaviour
     {
         if (collidedBall != null)
         {
-            levelStatus.AddScore(collidedBall.ballId);
+            levelStatus.AddScore(collidedBall.ballId, true);
             collidedBall = null;
         }
     }

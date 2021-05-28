@@ -54,7 +54,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 730866d6870084351bf0f3e4e0593675, type: 2}
   - {fileID: 11400000, guid: 64745c6ed650841eb8c0571502f1bd0b, type: 2}
   - {fileID: 11400000, guid: 6ad4b323e16b44b74a97ddc462ef185c, type: 2}
-  - {fileID: 11400000, guid: d3fcd0a9e56c940d098f73c1a4d95c86, type: 2}
   - {fileID: 11400000, guid: 38998025d8ace4e048b55a23e0cd6e7f, type: 2}
   items: {fileID: 5242045186647590867}
   stopSpinnerTimer: 3

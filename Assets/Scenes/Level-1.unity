@@ -375,8 +375,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 100}
-  m_SizeDelta: {x: 200, y: 40}
+  m_AnchoredPosition: {x: -150, y: 100}
+  m_SizeDelta: {x: 300, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &98323220
 MonoBehaviour:
@@ -5683,6 +5683,7 @@ MonoBehaviour:
   timer: {fileID: 640718576}
   targetKills: {fileID: 681829654}
   botKills: {fileID: 16969131}
+  selectedMode: 
 --- !u!1001 &263058575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5696,7 +5697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: dontMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: ballScore
@@ -6119,7 +6120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: dontMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: ballScore
@@ -6212,7 +6213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: dontMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: ballScore
@@ -6456,7 +6457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: dontMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: ballScore
@@ -7208,8 +7209,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -160}
-  m_SizeDelta: {x: 200, y: 240}
+  m_AnchoredPosition: {x: -150, y: -160}
+  m_SizeDelta: {x: 300, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &807870601
 MonoBehaviour:
@@ -7535,8 +7536,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
-  m_SizeDelta: {x: 200, y: 40}
+  m_AnchoredPosition: {x: -150, y: 0}
+  m_SizeDelta: {x: 300, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &864101534
 MonoBehaviour:
@@ -7648,7 +7649,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &877065989
 Transform:
   m_ObjectHideFlags: 0
@@ -7987,8 +7988,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -100}
-  m_SizeDelta: {x: 200, y: 40}
+  m_AnchoredPosition: {x: -150, y: -100}
+  m_SizeDelta: {x: 300, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &974090928
 MonoBehaviour:
@@ -14756,8 +14757,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 50}
-  m_SizeDelta: {x: 200, y: 40}
+  m_AnchoredPosition: {x: -150, y: 50}
+  m_SizeDelta: {x: 300, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1881654999
 MonoBehaviour:
@@ -14814,7 +14815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: dontMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: ballScore
@@ -14925,8 +14926,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -50}
-  m_SizeDelta: {x: 200, y: 40}
+  m_AnchoredPosition: {x: -150, y: -50}
+  m_SizeDelta: {x: 300, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1888290349
 MonoBehaviour:
@@ -25996,7 +25997,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: dontMove
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6026932570991724821, guid: 262b8f34caf2a45b6b3f062c06abd0de, type: 3}
       propertyPath: slowSkillStatus

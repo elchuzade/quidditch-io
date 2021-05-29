@@ -147,7 +147,7 @@ public class MainStatus : MonoBehaviour
         player.playerName = nameInput.text;
         player.SavePlayer();
 
-        navigator.LoadNextLevel(player.nextLevelIndex);
+        navigator.LoadNextLevel(1);
     }
 
     // @access from MainStatus canvas

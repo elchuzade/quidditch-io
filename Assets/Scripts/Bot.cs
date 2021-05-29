@@ -58,7 +58,13 @@ public class Bot : Ball
             {
                 if (!dontMove)
                 {
-                    ChargeAtTarget();
+                    if (levelStatus.selectedMode == "push")
+                    {
+                        ChargeAtBall();
+                    } else
+                    {
+                        ChargeAtTarget();
+                    }
                 }
             }
         }
@@ -75,11 +81,8 @@ public class Bot : Ball
     #endregion
 
     #region Private Methods
-    void ChargeAtTarget()
+    void Charge()
     {
-        Target randomTarget = targets[Random.Range(0, targets.Length)];
-        // Aim at random target
-        direction = randomTarget.transform.position - transform.position;
         // Add small error to the vector to make it look not perfectly aimed
         Vector3 error = new Vector3(Random.Range(0, 100), 0, Random.Range(0, 100));
         direction += error;
@@ -90,6 +93,24 @@ public class Bot : Ball
 
         // Push yourself toward the target with set speed
         rb.AddForce(direction.normalized * speed, ForceMode.Impulse);
+    }
+
+    void ChargeAtBall()
+    {
+        Ball randomBall = botsAndPlayer[Random.Range(0, botsAndPlayer.Length)];
+        // Aim at random target
+        direction = randomBall.transform.position - transform.position;
+
+        Charge();
+    }
+
+    void ChargeAtTarget()
+    {
+        Target randomTarget = targets[Random.Range(0, targets.Length)];
+        // Aim at random target
+        direction = randomTarget.transform.position - transform.position;
+
+        Charge();
     }
     #endregion
 

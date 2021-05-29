@@ -5,10 +5,8 @@ public class Player : MonoBehaviour
 {
     public int xp = 0;
     public int currentBallIndex = 0;
-    public int nextLevelIndex = 1;
     public string playerName = "Player";
     public bool playerCreated = false;
-    public bool nameChanged = false;
     public bool privacyPolicyAccepted = false;
     public bool privacyPolicyDeclined = false;
     public bool newChallengeUnlocked = false;
@@ -46,10 +44,8 @@ public class Player : MonoBehaviour
     {
         xp = 2532;
         currentBallIndex = 0;
-        nextLevelIndex = 1;
         playerName = "Player";
         playerCreated = false;
-        nameChanged = false;
         privacyPolicyAccepted = false;
         privacyPolicyDeclined = false;
         newChallengeUnlocked = true;
@@ -79,8 +75,6 @@ public class Player : MonoBehaviour
         currentBallIndex = data.currentBallIndex;
         playerName = data.playerName;
         playerCreated = data.playerCreated;
-        nameChanged = data.nameChanged;
-        nextLevelIndex = data.nextLevelIndex;
         privacyPolicyAccepted = data.privacyPolicyAccepted;
         privacyPolicyDeclined = data.privacyPolicyDeclined;
         newChallengeUnlocked = data.newChallengeUnlocked;

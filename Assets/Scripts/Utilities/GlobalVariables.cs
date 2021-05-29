@@ -9,4 +9,6 @@ public class GlobalVariables : MonoBehaviour
     public enum BallTypes { Common, Rare, Legendary };
 
     public enum BarrierTypes { Light, Heavy };
+
+    public enum LeaderboardItemColor { Gold, Silver, Bronze};
 }

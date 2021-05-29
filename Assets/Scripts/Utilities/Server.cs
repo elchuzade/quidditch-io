@@ -12,16 +12,12 @@ public class Server : MonoBehaviour
         public string deviceOS;
     }
 
-    // Change player name
-    public class PlayerName
-    {
-        public string playerName;
-    }
     // Each row of leaderboard
-    public class LeaderboardItem
+    public class LeaderboardValue
     {
         public string playerName;
         public int rank;
+        public int xp;
     }
 
     // Video Link
@@ -38,13 +34,19 @@ public class Server : MonoBehaviour
     public class PlayerData
     {
         public int xp;
-        public int nextLevelIndex;
         public int currentBallIndex;
+
+        // Clicks
+        public List<long> leaderboardClicks;
+        public List<long> shopClicks;
+        public List<long> challengesClicks;
+        public List<long> pushModePlayed;
+        public List<long> targetModePlayed;
     }
 
     // LOCAL TESTING
     //string abboxAdsApi = "http://localhost:5002";
-    //string quidditchIOApi = "http://localhost:5001/v1/quidditchIO";
+    string quidditchIOApi = "http://localhost:5001/v1/quidditchIO";
 
     // STAGING
     //string abboxAdsApi = "https://staging.ads.abbox.com";
@@ -52,12 +54,12 @@ public class Server : MonoBehaviour
 
     // PRODUCTION
     string abboxAdsApi = "https://ads.abbox.com";
-    string quidditchIOApi = "https://api.abboxgames.com/v1/quidditchIO";
+    //string quidditchIOApi = "https://api.abboxgames.com/v1/quidditchIO";
 
-    List<LeaderboardItem> top = new List<LeaderboardItem>();
-    List<LeaderboardItem> before = new List<LeaderboardItem>();
-    List<LeaderboardItem> after = new List<LeaderboardItem>();
-    LeaderboardItem you = new LeaderboardItem();
+    List<LeaderboardValue> top = new List<LeaderboardValue>();
+    List<LeaderboardValue> before = new List<LeaderboardValue>();
+    List<LeaderboardValue> after = new List<LeaderboardValue>();
+    LeaderboardValue you = new LeaderboardValue();
 
     // To send response to corresponding files
     [SerializeField] MainStatus mainStatus;
@@ -81,8 +83,20 @@ public class Server : MonoBehaviour
 
         PlayerData playerData = new PlayerData();
         playerData.xp = player.xp;
-        playerData.nextLevelIndex = player.nextLevelIndex;
         playerData.currentBallIndex = player.currentBallIndex;
+
+        // Clicks
+        playerData.leaderboardClicks = new List<long>();
+        playerData.shopClicks = new List<long>();
+        playerData.challengesClicks = new List<long>();
+        playerData.pushModePlayed = new List<long>();
+        playerData.targetModePlayed = new List<long>();
+
+        player.leaderboardClicks.ForEach(c => { playerData.leaderboardClicks.Add(c); });
+        player.shopClicks.ForEach(c => { playerData.shopClicks.Add(c); });
+        player.challengesClicks.ForEach(c => { playerData.challengesClicks.Add(c); });
+        player.pushModePlayed.ForEach(c => { playerData.pushModePlayed.Add(c); });
+        player.targetModePlayed.ForEach(c => { playerData.targetModePlayed.Add(c); });
 
         string playerDataJson = JsonUtility.ToJson(playerData);
 
@@ -115,7 +129,7 @@ public class Server : MonoBehaviour
         {
             Debug.Log(webRequest.downloadHandler.text);
             // Make the success actions received from creating a player
-            //mainStatus.CreatePlayerSuccess();
+            mainStatus.CreatePlayerSuccess();
         }
     }
 
@@ -128,8 +142,20 @@ public class Server : MonoBehaviour
 
         PlayerData playerData = new PlayerData();
         playerData.xp = player.xp;
-        playerData.nextLevelIndex = player.nextLevelIndex;
         playerData.currentBallIndex = player.currentBallIndex;
+
+        // Clicks
+        playerData.leaderboardClicks = new List<long>();
+        playerData.shopClicks = new List<long>();
+        playerData.challengesClicks = new List<long>();
+        playerData.pushModePlayed = new List<long>();
+        playerData.targetModePlayed = new List<long>();
+
+        player.leaderboardClicks.ForEach(c => { playerData.leaderboardClicks.Add(c); });
+        player.shopClicks.ForEach(c => { playerData.shopClicks.Add(c); });
+        player.challengesClicks.ForEach(c => { playerData.challengesClicks.Add(c); });
+        player.pushModePlayed.ForEach(c => { playerData.pushModePlayed.Add(c); });
+        player.targetModePlayed.ForEach(c => { playerData.targetModePlayed.Add(c); });
 
         string playerDataJson = JsonUtility.ToJson(playerData);
 
@@ -151,16 +177,16 @@ public class Server : MonoBehaviour
         webRequest.SetRequestHeader("token", headerMessage);
 
         yield return webRequest.SendWebRequest();
-        //if (webRequest.result == UnityWebRequest.Result.ConnectionError)
-        //{
-        //    Debug.Log(webRequest.downloadHandler.text);
-        //    // Set the error received from creating a player
-        //}
-        //else
-        //{
-        //    Debug.Log(webRequest.downloadHandler.text);
-        //    // Make the success actions received from creating a player
-        //}
+        if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+        {
+            Debug.Log(webRequest.downloadHandler.text);
+            // Set the error received from creating a player
+        }
+        else
+        {
+            Debug.Log(webRequest.downloadHandler.text);
+            // Make the success actions received from creating a player
+        }
     }
 
     public void SendVideoClick(bool privacy, string videoId, string link)
@@ -224,51 +250,6 @@ public class Server : MonoBehaviour
 
     /* ---------- LEADERBOARD SCENE ---------- */
 
-    // CHANGE PLAYER NAME
-    public void ChangePlayerName(string playerName)
-    {
-        string nameUrl = quidditchIOApi + "/name";
-
-        PlayerName nameObject = new PlayerName();
-        nameObject.playerName = playerName;
-
-        string nameJson = JsonUtility.ToJson(nameObject);
-
-        StartCoroutine(ChangeNameCoroutine(nameUrl, nameJson));
-    }
-
-    // CHANGE PLAYER NAME
-    private IEnumerator ChangeNameCoroutine(string url, string playerName)
-    {
-        var jsonBinary = System.Text.Encoding.UTF8.GetBytes(playerName);
-        DownloadHandlerBuffer downloadHandlerBuffer = new DownloadHandlerBuffer();
-        UploadHandlerRaw uploadHandlerRaw = new UploadHandlerRaw(jsonBinary);
-        uploadHandlerRaw.contentType = "application/json";
-
-        UnityWebRequest webRequest =
-            new UnityWebRequest(url, "POST", downloadHandlerBuffer, uploadHandlerRaw);
-
-        string message = JsonUtility.ToJson(header);
-        string headerMessage = BuildHeaders(message);
-        webRequest.SetRequestHeader("token", headerMessage);
-
-        yield return webRequest.SendWebRequest();
-
-        if (webRequest.result == UnityWebRequest.Result.ConnectionError)
-        {
-            Debug.Log(webRequest.downloadHandler.text);
-            // Set the error received from creating a player
-            //leaderboardStatus.ChangeNameError();
-        }
-        else
-        {
-            Debug.Log(webRequest.downloadHandler.text);
-            // Make the success actions received from creating a player
-            //leaderboardStatus.ChangeNameSuccess();
-        }
-    }
-
-
     // GET LEADERBOARD LIST
     public void GetLeaderboard()
     {
@@ -320,7 +301,7 @@ public class Server : MonoBehaviour
             // Parse top data to leaderboard item to populate the list
             for (int i = 0; i < topData.Length; i++)
             {
-                LeaderboardItem item = JsonUtility.FromJson<LeaderboardItem>(topData[i]);
+                LeaderboardValue item = JsonUtility.FromJson<LeaderboardValue>(topData[i]);
                 top.Add(item);
             }
         }
@@ -330,26 +311,26 @@ public class Server : MonoBehaviour
             // Parse before data
             for (int i = 0; i < beforeData.Length; i++)
             {
-                LeaderboardItem item = JsonUtility.FromJson<LeaderboardItem>(beforeData[i]);
+                LeaderboardValue item = JsonUtility.FromJson<LeaderboardValue>(beforeData[i]);
                 before.Add(item);
             }
         }
 
         // Parse you data
-        you = JsonUtility.FromJson<LeaderboardItem>(youData);
+        you = JsonUtility.FromJson<LeaderboardValue>(youData);
 
         if (afterData != null)
         {
             // Parse after data
             for (int i = 0; i < afterData.Length; i++)
             {
-                LeaderboardItem item = JsonUtility.FromJson<LeaderboardItem>(afterData[i]);
+                LeaderboardValue item = JsonUtility.FromJson<LeaderboardValue>(afterData[i]);
                 after.Add(item);
             }
         }
 
         // Send leaderboard data to leaderboard scene
-        //leaderboardStatus.SetLeaderboardData(top, before, you, after);
+        leaderboardStatus.SetLeaderboardData(top, before, you, after);
     }
 }
 

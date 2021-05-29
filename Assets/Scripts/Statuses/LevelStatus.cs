@@ -49,6 +49,8 @@ public class LevelStatus : MonoBehaviour
     int targetKillsCount = 0;
     float secondsLeft = 120;
 
+    public string selectedMode;
+
     void Awake()
     {
         navigator = FindObjectOfType<Navigator>();
@@ -70,6 +72,8 @@ public class LevelStatus : MonoBehaviour
 
         player = FindObjectOfType<Player>();
         player.LoadPlayer();
+
+        selectedMode = player.selectedMode;
 
         InstantiatePlayerBall();
         SetRandomNames();
@@ -152,7 +156,9 @@ public class LevelStatus : MonoBehaviour
         leadersName.text = name;
         leadersName.transform.parent.transform.position = defaultPosition;
 
-        float shift = leadersNameWidth - leadersName.preferredWidth - leadersNameMargin * 2;
+        Debug.Log(leadersNameWidth);
+
+        float shift = leadersNameWidth - leadersName.preferredWidth;
 
         leadersName.transform.parent.transform.position += new Vector3(shift * screenRatio, 0, 0);
 

@@ -1,32 +1,50 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static GlobalVariables;
 
 public class LeaderboardItem : MonoBehaviour
 {
     [SerializeField] GameObject itemRank;
     [SerializeField] GameObject itemName;
-    [SerializeField] GameObject itemIcon;
-    [SerializeField] GameObject dots;
+    [SerializeField] GameObject itemXP;
+    [SerializeField] GameObject frame;
+    [SerializeField] GameObject wrapper;
+
+    Color32 goldColor = new Color32(255, 215, 0, 255);
+    Color32 silverColor = new Color32(192, 192, 192, 255);
+    Color32 bronzeColor = new Color32(205, 127, 50, 255);
 
     #region Public Methods
-    public void SetLeaderboardItem(int _rank, string _name, Sprite _icon)
+    public void SetItemEntry(int _rank, string _name, int _xp)
     {
-        dots.SetActive(false);
         itemRank.SetActive(true);
         itemName.SetActive(true);
-        itemIcon.SetActive(true);
+        itemXP.SetActive(true);
 
-        itemIcon.GetComponent<Image>().sprite = _icon;
         itemRank.GetComponent<Text>().text = _rank.ToString();
         itemName.GetComponent<Text>().text = _name;
+        itemXP.GetComponent<Text>().text = _xp.ToString();
     }
 
-    public void SetDots()
+    public void SetLeaderboardItemColor(LeaderboardItemColor color)
     {
-        dots.SetActive(true);
-        itemRank.SetActive(false);
-        itemName.SetActive(false);
-        itemIcon.SetActive(false);
+        switch (color)
+        {
+            case LeaderboardItemColor.Gold:
+                frame.GetComponent<Image>().color = goldColor;
+                break;
+            case LeaderboardItemColor.Silver:
+                frame.GetComponent<Image>().color = silverColor;
+                break;
+            case LeaderboardItemColor.Bronze:
+                frame.GetComponent<Image>().color = bronzeColor;
+                break;
+        }
+    }
+
+    public void SetYouItem()
+    {
+        wrapper.SetActive(true);
     }
     #endregion
 }

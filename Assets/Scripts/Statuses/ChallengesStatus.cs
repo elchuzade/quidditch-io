@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ChallengesStatus : MonoBehaviour
@@ -17,6 +18,12 @@ public class ChallengesStatus : MonoBehaviour
         player.LoadPlayer();
 
         player.newChallengeUnlocked = false;
+        player.SavePlayer();
+
+        // Save click
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        long date = now.ToUnixTimeMilliseconds();
+        player.challengesClicks.Add(date);
         player.SavePlayer();
     }
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LeaderboardStatus : MonoBehaviour
@@ -17,6 +18,12 @@ public class LeaderboardStatus : MonoBehaviour
         player = FindObjectOfType<Player>();
         player.ResetPlayer();
         player.LoadPlayer();
+
+        // Save click
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        long date = now.ToUnixTimeMilliseconds();
+        player.leaderboardClicks.Add(date);
+        player.SavePlayer();
     }
 
     #region Public Methods

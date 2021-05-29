@@ -23,6 +23,8 @@ public class MainStatus : MonoBehaviour
     [SerializeField] GameObject ballParent;
     [SerializeField] GameObject[] allBalls;
 
+    [SerializeField] InputField nameInput;
+
     void Awake()
     {
         navigator = FindObjectOfType<Navigator>();
@@ -33,7 +35,7 @@ public class MainStatus : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<Player>();
-        player.ResetPlayer();
+        //player.ResetPlayer();
         player.LoadPlayer();
 
         server.GetVideoLink();
@@ -67,6 +69,8 @@ public class MainStatus : MonoBehaviour
 
         GameObject ballPrefab = Instantiate(allBalls[player.currentBallIndex], ballParent.transform.position, Quaternion.identity);
         ballPrefab.transform.SetParent(ballParent.transform);
+
+        nameInput.text = player.playerName;
     }
 
     #region Private Methods
@@ -140,6 +144,9 @@ public class MainStatus : MonoBehaviour
     // @access from MainStatus canvas
     public void ClickPlayButton()
     {
+        player.playerName = nameInput.text;
+        player.SavePlayer();
+
         navigator.LoadNextLevel(player.nextLevelIndex);
     }
 

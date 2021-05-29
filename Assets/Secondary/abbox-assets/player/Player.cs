@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
     public int xp = 0;
     public int currentBallIndex = 0;
     public int nextLevelIndex = 1;
-    public string playerName = "";
+    public string playerName = "Player";
     public bool playerCreated = false;
     public bool nameChanged = false;
     public bool privacyPolicyAccepted = false;
@@ -14,6 +14,13 @@ public class Player : MonoBehaviour
     public bool newChallengeUnlocked = false;
     public bool newSkinUnlocked = false;
     public string selectedMode = "push";
+
+    public List<long> shopClicks = new List<long>();
+    public List<long> challengesClicks = new List<long>();
+    public List<long> leaderboardClicks = new List<long>();
+
+    public List<long> pushModePlayed = new List<long>();
+    public List<long> targetModePlayed = new List<long>();
 
     void Awake()
     {
@@ -40,7 +47,7 @@ public class Player : MonoBehaviour
         xp = 2532;
         currentBallIndex = 0;
         nextLevelIndex = 1;
-        playerName = "";
+        playerName = "Player";
         playerCreated = false;
         nameChanged = false;
         privacyPolicyAccepted = false;
@@ -48,6 +55,13 @@ public class Player : MonoBehaviour
         newChallengeUnlocked = true;
         newSkinUnlocked = true;
         selectedMode = "push";
+
+        shopClicks = new List<long>();
+        challengesClicks = new List<long>();
+        leaderboardClicks = new List<long>();
+
+        pushModePlayed = new List<long>();
+        targetModePlayed = new List<long>();
 
         SaveSystem.SavePlayer(this);
     }
@@ -72,5 +86,12 @@ public class Player : MonoBehaviour
         newChallengeUnlocked = data.newChallengeUnlocked;
         newSkinUnlocked = data.newSkinUnlocked;
         selectedMode = data.selectedMode;
+
+        shopClicks = data.shopClicks;
+        challengesClicks = data.challengesClicks;
+        leaderboardClicks = data.leaderboardClicks;
+
+        pushModePlayed = data.pushModePlayed;
+        targetModePlayed = data.targetModePlayed;
     }
 }

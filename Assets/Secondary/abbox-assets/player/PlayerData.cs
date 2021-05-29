@@ -16,6 +16,13 @@ public class PlayerData
     public bool newSkinUnlocked = false;
     public string selectedMode = "push";
 
+    public List<long> shopClicks = new List<long>();
+    public List<long> challengesClicks = new List<long>();
+    public List<long> leaderboardClicks = new List<long>();
+
+    public List<long> pushModePlayed = new List<long>();
+    public List<long> targetModePlayed = new List<long>();
+
     public PlayerData (Player player)
     {
         xp = player.xp;
@@ -29,5 +36,12 @@ public class PlayerData
         newChallengeUnlocked = player.newChallengeUnlocked;
         newSkinUnlocked = player.newSkinUnlocked;
         selectedMode = player.selectedMode;
+
+        shopClicks = player.shopClicks;
+        challengesClicks = player.challengesClicks;
+        leaderboardClicks = player.leaderboardClicks;
+
+        pushModePlayed = player.pushModePlayed;
+        targetModePlayed = player.targetModePlayed;
     }
 }

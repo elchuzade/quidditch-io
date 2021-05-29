@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using static GlobalVariables;
 
 public class ShopStatus : MonoBehaviour
 {
@@ -54,6 +52,12 @@ public class ShopStatus : MonoBehaviour
 
         // 0.125 is the step size based on 0 - 1 and number of transitions between balls 1 / 4
         SwipeBall((float)1 / 4 * player.currentBallIndex);
+
+        // Save click
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        long date = now.ToUnixTimeMilliseconds();
+        player.shopClicks.Add(date);
+        player.SavePlayer();
     }
 
     #region Public Methods

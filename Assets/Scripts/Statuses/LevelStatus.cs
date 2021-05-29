@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,8 +32,6 @@ public class LevelStatus : MonoBehaviour
 
     Color32 yourColor = new Color32(146, 255, 107, 255);
     Color32 defaultColor = new Color32(255, 255, 255, 255);
-    int yourFontSize = 28;
-    int defaultFontSize = 24;
     float defaultScreenWidth = 750;
     float screenRatio;
 
@@ -74,9 +73,24 @@ public class LevelStatus : MonoBehaviour
 
         InstantiatePlayerBall();
         SetRandomNames();
+        SetMyName();
 
         SetLeaderboard();
         SetCanvasValues();
+
+        // Save click
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        long date = now.ToUnixTimeMilliseconds();
+        if (player.selectedMode == "push")
+        {
+            targetKills.transform.parent.gameObject.SetActive(false);
+
+            player.pushModePlayed.Add(date);
+        } else
+        {
+            player.targetModePlayed.Add(date);
+        }
+        player.SavePlayer();
     }
 
     void Update()
@@ -113,6 +127,17 @@ public class LevelStatus : MonoBehaviour
         ballInstance.transform.localScale = new Vector3(20, 20, 20);
     }
 
+    void SetMyName()
+    {
+        for (int i = 0; i < balls.Length; i++)
+        {
+            if (balls[i].ballId == 0)
+            {
+                balls[i].ballName = player.playerName;
+            }
+        }
+    }
+
     void SetRandomNames()
     {
         for (int i = 0; i < bots.transform.childCount; i++)
@@ -134,12 +159,10 @@ public class LevelStatus : MonoBehaviour
         if (ballId == 0)
         {
             leadersName.color = yourColor;
-            leadersName.fontSize = yourFontSize;
         }
         else
         {
             leadersName.color = defaultColor;
-            leadersName.fontSize = defaultFontSize;
         }
     }
 

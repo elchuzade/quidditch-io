@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int coins = 0;
-    public int diamonds = 0;
+    public int xp = 0;
     public int currentBallIndex = 0;
     public int nextLevelIndex = 1;
     public string playerName = "";
@@ -12,8 +11,9 @@ public class Player : MonoBehaviour
     public bool nameChanged = false;
     public bool privacyPolicyAccepted = false;
     public bool privacyPolicyDeclined = false;
-    public List<int> allBalls = new List<int>() { 1, 0, 0, 0, 0 };
     public bool newChallengeUnlocked = false;
+    public bool newSkinUnlocked = false;
+    public string selectedMode = "push";
 
     void Awake()
     {
@@ -37,9 +37,8 @@ public class Player : MonoBehaviour
 
     public void ResetPlayer()
     {
-        coins = 900;
-        diamonds = 900;
-        currentBallIndex = 2;
+        xp = 2532;
+        currentBallIndex = 0;
         nextLevelIndex = 1;
         playerName = "";
         playerCreated = false;
@@ -47,8 +46,8 @@ public class Player : MonoBehaviour
         privacyPolicyAccepted = false;
         privacyPolicyDeclined = false;
         newChallengeUnlocked = true;
-
-        allBalls = new List<int>() { 1, 0, 1, 0, 0 };
+        newSkinUnlocked = true;
+        selectedMode = "push";
 
         SaveSystem.SavePlayer(this);
     }
@@ -62,16 +61,16 @@ public class Player : MonoBehaviour
             data = SaveSystem.LoadPlayer();
         }
 
-        coins = data.coins;
-        diamonds = data.diamonds;
+        xp = data.xp;
         currentBallIndex = data.currentBallIndex;
         playerName = data.playerName;
-        allBalls = data.allBalls;
         playerCreated = data.playerCreated;
         nameChanged = data.nameChanged;
         nextLevelIndex = data.nextLevelIndex;
         privacyPolicyAccepted = data.privacyPolicyAccepted;
         privacyPolicyDeclined = data.privacyPolicyDeclined;
         newChallengeUnlocked = data.newChallengeUnlocked;
+        newSkinUnlocked = data.newSkinUnlocked;
+        selectedMode = data.selectedMode;
     }
 }

@@ -4,8 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class PlayerData
 {
-    public int coins = 0;
-    public int diamonds = 0;
+    public int xp = 0;
     public int currentBallIndex = 0;
     public int nextLevelIndex = 1;
     public string playerName = "";
@@ -13,14 +12,13 @@ public class PlayerData
     public bool nameChanged = false;
     public bool privacyPolicyAccepted = false;
     public bool privacyPolicyDeclined = false;
-    public List<int> allBalls = new List<int>() { 1, 0, 0, 0, 0 };
     public bool newChallengeUnlocked = false;
+    public bool newSkinUnlocked = false;
+    public string selectedMode = "push";
 
     public PlayerData (Player player)
     {
-        coins = player.coins;
-        diamonds = player.diamonds;
-        allBalls = player.allBalls;
+        xp = player.xp;
         currentBallIndex = player.currentBallIndex;
         nextLevelIndex = player.nextLevelIndex;
         playerName = player.playerName;
@@ -29,5 +27,7 @@ public class PlayerData
         privacyPolicyAccepted = player.privacyPolicyAccepted;
         privacyPolicyDeclined = player.privacyPolicyDeclined;
         newChallengeUnlocked = player.newChallengeUnlocked;
+        newSkinUnlocked = player.newSkinUnlocked;
+        selectedMode = player.selectedMode;
     }
 }

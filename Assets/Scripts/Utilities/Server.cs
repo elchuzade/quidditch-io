@@ -37,12 +37,9 @@ public class Server : MonoBehaviour
 
     public class PlayerData
     {
-        public int coins;
-        public int diamonds;
+        public int xp;
         public int nextLevelIndex;
         public int currentBallIndex;
-
-        public List<int> allBalls;
     }
 
     // LOCAL TESTING
@@ -83,13 +80,9 @@ public class Server : MonoBehaviour
         string playerUrl = quidditchIOApi + "/player";
 
         PlayerData playerData = new PlayerData();
-        playerData.coins = player.coins;
-        playerData.diamonds = player.diamonds;
+        playerData.xp = player.xp;
         playerData.nextLevelIndex = player.nextLevelIndex;
         playerData.currentBallIndex = player.currentBallIndex;
-
-        playerData.allBalls = new List<int>();
-        player.allBalls.ForEach(l => { playerData.allBalls.Add(l); });
 
         string playerDataJson = JsonUtility.ToJson(playerData);
 
@@ -134,13 +127,9 @@ public class Server : MonoBehaviour
         string playerDataUrl = quidditchIOApi + "/data";
 
         PlayerData playerData = new PlayerData();
-        playerData.coins = player.coins;
-        playerData.diamonds = player.diamonds;
+        playerData.xp = player.xp;
         playerData.nextLevelIndex = player.nextLevelIndex;
         playerData.currentBallIndex = player.currentBallIndex;
-
-        playerData.allBalls = new List<int>();
-        player.allBalls.ForEach(l => { playerData.allBalls.Add(l); });
 
         string playerDataJson = JsonUtility.ToJson(playerData);
 

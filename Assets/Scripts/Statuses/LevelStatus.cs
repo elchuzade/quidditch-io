@@ -9,10 +9,19 @@ public class LevelStatus : MonoBehaviour
 
     [SerializeField] RandomName randomNames;
 
-    [SerializeField] GameObject canvas; // Hiding for development purposes
+    [SerializeField] GameObject canvas;
 
     [SerializeField] GameObject leadersWindowClosed;
     [SerializeField] GameObject leadersWindowOpened;
+
+    // To make leaderboard shift to the right based on the length of name
+    Vector3 defaultFirstPosition;
+    Vector3 defaultSecondPosition;
+    Vector3 defaultThirdPosition;
+    Vector3 defaultFourthPosition;
+    Vector3 defaultFifthPosition;
+    float leadersNameWidth;
+    float leadersNameMargin = 14;
 
     [SerializeField] Text first;
     [SerializeField] Text second;
@@ -24,6 +33,8 @@ public class LevelStatus : MonoBehaviour
     Color32 defaultColor = new Color32(255, 255, 255, 255);
     int yourFontSize = 28;
     int defaultFontSize = 24;
+    float defaultScreenWidth = 750;
+    float screenRatio;
 
     [SerializeField] GameObject bots;
     [SerializeField] Ball[] balls;
@@ -48,6 +59,16 @@ public class LevelStatus : MonoBehaviour
 
     void Start()
     {
+        screenRatio = Screen.width / defaultScreenWidth;
+        defaultFirstPosition = first.transform.position;
+        defaultSecondPosition = second.transform.position;
+        defaultThirdPosition = third.transform.position;
+        defaultFourthPosition = fourth.transform.position;
+        defaultFifthPosition = fifth.transform.position;
+
+        Rect nameRect = first.transform.parent.GetComponent<RectTransform>().rect;
+        leadersNameWidth = nameRect.width;
+
         player = FindObjectOfType<Player>();
         player.LoadPlayer();
 
@@ -101,74 +122,45 @@ public class LevelStatus : MonoBehaviour
         }
     }
 
+    void ModifyLeadersInput(Text leadersName, string name, Vector3 defaultPosition, int ballId)
+    {
+        leadersName.text = name;
+        leadersName.transform.parent.transform.position = defaultPosition;
+
+        float shift = leadersNameWidth - leadersName.preferredWidth - leadersNameMargin * 2;
+
+        leadersName.transform.parent.transform.position += new Vector3(shift * screenRatio, 0, 0);
+
+        if (ballId == 0)
+        {
+            leadersName.color = yourColor;
+            leadersName.fontSize = yourFontSize;
+        }
+        else
+        {
+            leadersName.color = defaultColor;
+            leadersName.fontSize = defaultFontSize;
+        }
+    }
+
     void SetLeaderboardName(int i, int j)
     {
         switch (j)
         {
             case 0:
-                first.text = balls[i].ballName;
-                if (balls[i].ballId == 0)
-                {
-                    first.color = yourColor;
-                    first.fontSize = yourFontSize;
-                }
-                else
-                {
-                    first.color = defaultColor;
-                    first.fontSize = defaultFontSize;
-                }
+                ModifyLeadersInput(first, balls[i].ballName, defaultFirstPosition, balls[i].ballId);
                 break;
             case 1:
-                second.text = balls[i].ballName;
-                if (balls[i].ballId == 0)
-                {
-                    second.color = yourColor;
-                    second.fontSize = yourFontSize;
-                }
-                else
-                {
-                    second.color = defaultColor;
-                    second.fontSize = defaultFontSize;
-                }
+                ModifyLeadersInput(second, balls[i].ballName, defaultSecondPosition, balls[i].ballId);
                 break;
             case 2:
-                third.text = balls[i].ballName;
-                if (balls[i].ballId == 0)
-                {
-                    third.color = yourColor;
-                    third.fontSize = yourFontSize;
-                }
-                else
-                {
-                    third.color = defaultColor;
-                    third.fontSize = defaultFontSize;
-                }
+                ModifyLeadersInput(third, balls[i].ballName, defaultThirdPosition, balls[i].ballId);
                 break;
             case 3:
-                fourth.text = balls[i].ballName;
-                if (balls[i].ballId == 0)
-                {
-                    fourth.color = yourColor;
-                    fourth.fontSize = yourFontSize;
-                }
-                else
-                {
-                    fourth.color = defaultColor;
-                    fourth.fontSize = defaultFontSize;
-                }
+                ModifyLeadersInput(fourth, balls[i].ballName, defaultFourthPosition, balls[i].ballId);
                 break;
             case 4:
-                fifth.text = balls[i].ballName;
-                if (balls[i].ballId == 0)
-                {
-                    fifth.color = yourColor;
-                    fifth.fontSize = yourFontSize;
-                }
-                else
-                {
-                    fifth.color = defaultColor;
-                    fifth.fontSize = defaultFontSize;
-                }
+                ModifyLeadersInput(fifth, balls[i].ballName, defaultFifthPosition, balls[i].ballId);
                 break;
         }
     }

@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RandomName : MonoBehaviour
 {
-    [SerializeField] string[] names = {
+    [SerializeField] List<string> names = new List<string>() {
         "Outriggr",
         "Outsider",
         "OutOfDisWorld",
@@ -198,6 +199,8 @@ public class RandomName : MonoBehaviour
 
     public string GetRandomName()
     {
-        return names[Random.Range(0, names.Length)];
+        string name = names[Random.Range(0, names.Count)];
+        names.Remove(name);
+        return name;
     }
 }

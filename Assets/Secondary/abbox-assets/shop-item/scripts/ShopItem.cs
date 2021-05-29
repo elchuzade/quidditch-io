@@ -1,35 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static GlobalVariables;
 
 public class ShopItem : MonoBehaviour
 {
-    [SerializeField] int price;
+    [SerializeField] int unlockXP;
     [SerializeField] int index;
 
-    [SerializeField] Currency currency;
-
-    [SerializeField] GameObject priceTag;
-    [SerializeField] Text priceText;
-    [SerializeField] GameObject diamondIcon;
-    [SerializeField] GameObject coinIcon;
     [SerializeField] GameObject selectedText;
     [SerializeField] GameObject selectButton;
-    [SerializeField] GameObject unlockButton;
+    [SerializeField] GameObject unlocksAtText;
 
     void Start()
     {
-        if (currency == Currency.Coin)
-        {
-            diamondIcon.SetActive(false);
-        }
-        else
-        {
-            coinIcon.SetActive(false);
-        }
-        priceText.text = price.ToString();
         selectedText.SetActive(false);
         selectButton.SetActive(false);
+        unlocksAtText.SetActive(true);
+
+        unlocksAtText.transform.GetChild(0).GetComponent<Text>().text = "UNLOCKS AT " + unlockXP.ToString() + " XP";
     }
 
     #region Public Methods
@@ -38,7 +25,7 @@ public class ShopItem : MonoBehaviour
     {
         selectedText.SetActive(true);
         selectButton.SetActive(false);
-        unlockButton.SetActive(false);
+        unlocksAtText.SetActive(false);
     }
 
     // @access from ShopStatus
@@ -46,8 +33,7 @@ public class ShopItem : MonoBehaviour
     {
         selectedText.SetActive(false);
         selectButton.SetActive(true);
-        priceTag.SetActive(false);
-        unlockButton.SetActive(false);
+        unlocksAtText.SetActive(false);
     }
 
     // @access from ShopStatus
@@ -58,21 +44,15 @@ public class ShopItem : MonoBehaviour
     }
 
     // @access from ShopStatus
-    public Currency GetCurrency()
-    {
-        return currency;
-    }
-
-    // @access from ShopStatus
-    public int GetPrice()
-    {
-        return price;
-    }
-
-    // @access from ShopStatus
     public int GetIndex()
     {
         return index;
+    }
+
+    // @access from ShopStatus
+    public int GetXP()
+    {
+        return unlockXP;
     }
     #endregion
 }

@@ -9,14 +9,16 @@ public class MainStatus : MonoBehaviour
     Server server;
     TV tv;
 
-    [SerializeField] Scoreboard scoreboard;
-
+    [SerializeField] Text xp;
+    [SerializeField] GameObject shopButton;
     [SerializeField] GameObject challengesButton;
     [SerializeField] GameObject hapticsButton;
     [SerializeField] GameObject soundsButton;
+    [SerializeField] GameObject leaderboardButton;
+
     [SerializeField] GameObject privacyWindow;
     [SerializeField] GameObject quitGameWindow;
-    [SerializeField] GameObject leaderboardButton;
+    [SerializeField] GameObject gameModesWindow;
 
     [SerializeField] GameObject ballParent;
     [SerializeField] GameObject[] allBalls;
@@ -31,7 +33,7 @@ public class MainStatus : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<Player>();
-        //player.ResetPlayer();
+        player.ResetPlayer();
         player.LoadPlayer();
 
         server.GetVideoLink();
@@ -57,15 +59,22 @@ public class MainStatus : MonoBehaviour
             leaderboardButton.GetComponent<Image>().color = new Color32(255, 197, 158, 100);
         }
 
-        SetScoreboardValues();
+        SetPlayerXP();
+
         SetButtonInitialState();
         SetChallengesButton();
+        SetShopButton();
 
         GameObject ballPrefab = Instantiate(allBalls[player.currentBallIndex], ballParent.transform.position, Quaternion.identity);
         ballPrefab.transform.SetParent(ballParent.transform);
     }
 
     #region Private Methods
+    void SetPlayerXP()
+    {
+        xp.text = player.xp.ToString() + " XP";
+    }
+
     void SetChallengesButton()
     {
         if (player.newChallengeUnlocked)
@@ -77,10 +86,16 @@ public class MainStatus : MonoBehaviour
         }
     }
 
-    void SetScoreboardValues()
+    void SetShopButton()
     {
-        scoreboard.SetCoins(player.coins);
-        scoreboard.SetDiamonds(player.diamonds);
+        if (player.newSkinUnlocked)
+        {
+            shopButton.transform.Find("Shop").GetComponent<Animator>().enabled = true;
+        }
+        else
+        {
+            shopButton.transform.Find("Shop").GetComponent<Animator>().enabled = false;
+        }
     }
 
     // Set initial states of haptics button based on player prefs
@@ -138,6 +153,12 @@ public class MainStatus : MonoBehaviour
     public void ClickShopButton()
     {
         navigator.LoadShop();
+    }
+
+    // @access from MainStatus canvas
+    public void ClickGameModesButton()
+    {
+        gameModesWindow.SetActive(true);
     }
 
     // @access from MainStatus canvas
